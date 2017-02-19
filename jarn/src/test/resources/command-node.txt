@@ -1,0 +1,2 @@
+Bob: Let's go!
+<<move bob to under_bridge>>

@@ -1,0 +1,85 @@
+allprojects {
+    apply plugin: "eclipse"
+    apply plugin: "idea"
+    apply plugin: "maven"
+
+    ext {
+		antlrVersion = '4.6'
+		mustacheVersion = '0.8.18'
+		
+		junitVersion = '4.11'
+		jmockVersion = '2.6.0'
+    }
+
+	repositories {
+        mavenLocal()
+        mavenCentral()
+        maven { url "https://oss.sonatype.org/content/repositories/releases/" }
+    }
+}
+
+project(":jarn-antlr") {
+	apply plugin: 'antlr'
+	
+	sourceCompatibility = 1.7
+	targetCompatibility = 1.7
+	
+	dependencies {
+		antlr "org.antlr:antlr4:$antlrVersion"
+	}
+	
+	generateGrammarSource {
+		arguments += ["-package", "org.mini2Dx.yarn.parser"]
+	}
+}
+
+project(":jarn") {
+	apply plugin: "java"
+	apply plugin: "signing"
+	
+	sourceCompatibility = 1.7
+	targetCompatibility = 1.7
+	
+	group = 'org.mini2Dx'
+    version = '1.0.0-SNAPSHOT'
+    
+    task copyJarnSourcesToProject(type: Copy, dependsOn: project(":jarn-antlr").compileJava) {
+		from "$projectDir/../jarn-antlr/build/generated-src/antlr/main/"
+		into "$projectDir/src/main/java/org/mini2Dx/yarn/parser/"
+	}
+    
+    task javadocJar(type: Jar) {
+		classifier = 'javadoc'
+		from javadoc
+	}
+
+	task sourcesJar(type: Jar) {
+		classifier = 'sources'
+		from sourceSets.main.allSource
+	}
+	
+	task docs(type: Javadoc) {
+		source project.sourceSets.main.allJava
+		classpath = files(project.sourceSets.main.compileClasspath)
+		destinationDir = new File(project.projectDir, 'docs')
+	}
+	
+	artifacts {
+		archives javadocJar, sourcesJar
+	}
+	
+	dependencies {
+		compile "org.antlr:antlr4-runtime:$antlrVersion"
+		compile "com.github.spullara.mustache.java:compiler:$mustacheVersion"
+		
+		testCompile "junit:junit:$junitVersion"
+		testCompile "org.jmock:jmock-legacy:$jmockVersion"
+		testCompile "org.jmock:jmock-junit4:$jmockVersion"	
+	}
+	
+	compileJava.dependsOn copyJarnSourcesToProject
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '3.3'
+}

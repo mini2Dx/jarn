@@ -1,0 +1,3 @@
+include "jarn-antlr", "jarn"
+
+rootProject.name = 'jarn-parent'

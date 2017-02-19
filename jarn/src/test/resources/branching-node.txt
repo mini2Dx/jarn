@@ -1,0 +1,12 @@
+Frank: Hey, it's me. Frank.
+Sammy: W-who?
+Frank: Frank! Ya know?
+Sammy: Umm. N-no, I don't... know
+<<if $keys > 7>>
+	[[Why don't you know?|WhyNot]]
+	[[Anyways, whatever.|Whatever]]
+<<endif>>
+
+[[Why don't you know?|WhyNot]]
+[[Anyways, whatever.|Whatever]]
+[[OptionWithNoLabel]]

@@ -1,0 +1,5 @@
+<<set $keys to 1>>
+<<set $keys to $keys + 1>>
+<<if $keys * 1 > 7 - 2>>
+    Bob: You win the game!
+<<endif>>
