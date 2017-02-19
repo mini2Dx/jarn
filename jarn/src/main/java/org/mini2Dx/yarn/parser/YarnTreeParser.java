@@ -28,12 +28,15 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Stack;
 
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.BufferedTokenStream;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.mini2Dx.yarn.YarnNode;
+import org.mini2Dx.yarn.operation.YarnAssign;
 import org.mini2Dx.yarn.operation.YarnCommand;
+import org.mini2Dx.yarn.operation.YarnIfStatement;
 import org.mini2Dx.yarn.operation.YarnLine;
 import org.mini2Dx.yarn.operation.YarnOption;
 import org.mini2Dx.yarn.operation.YarnOptionGroup;
@@ -51,6 +54,8 @@ import org.mini2Dx.yarn.parser.YarnParser.OptionStatementContext;
  *
  */
 public class YarnTreeParser extends YarnBaseListener {
+	private final Stack<YarnIfStatement> ifStack = new Stack<YarnIfStatement>();
+	
 	private YarnNode currentNode;
 
 	public List<YarnNode> read(Reader reader) throws IOException {
@@ -112,28 +117,35 @@ public class YarnTreeParser extends YarnBaseListener {
 
 	@Override
 	public void exitIfExpression(IfExpressionContext ctx) {
-
+		YarnIfStatement ifStatement = new YarnIfStatement(currentNode.getTotalOperations(), ctx.getStart().getLine());
+		currentNode.appendOperation(ifStatement);
+		ifStack.push(ifStatement);
 	}
 
 	@Override
 	public void exitElseifExpression(ElseifExpressionContext ctx) {
-
+		YarnIfStatement ifStatement = ifStack.pop();
+		ifStatement.setFailureOperationIndex(currentNode.getTotalOperations());
 	}
 
 	@Override
 	public void exitElseStatement(ElseStatementContext ctx) {
-
+		YarnIfStatement ifStatement = ifStack.pop();
+		ifStatement.setFailureOperationIndex(currentNode.getTotalOperations());
 	}
 
 	@Override
 	public void exitEndifStatement(EndifStatementContext ctx) {
-
+		YarnIfStatement ifStatement = ifStack.pop();
+		ifStatement.setFailureOperationIndex(currentNode.getTotalOperations());
 	}
 
 	@Override
 	public void exitCommandStatement(CommandStatementContext ctx) {
 		if (ctx.assignExpression() != null) {
-
+			String variableName = ctx.assignExpression().VariableLiteral().getText().trim();
+			YarnAssign assign = new YarnAssign(currentNode.getTotalOperations(), ctx.getStart().getLine(), variableName, ctx.assignExpression().valueExpression());
+			currentNode.appendOperation(assign);
 		} else {
 			YarnCommand command = new YarnCommand(currentNode.getTotalOperations(), ctx.getStart().getLine(),
 					ctx.textExpression().getText().trim());

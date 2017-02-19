@@ -26,45 +26,17 @@ package org.mini2Dx.yarn.variable;
 /**
  *
  */
-public class NumberVariable extends YarnVariable implements YarnNumber {
-	private double value;
+public interface YarnNumber {
 	
-	public NumberVariable(String name, double value) {
-		super(name, YarnVariableType.NUMBER);
-		this.value = value;
-	}
-
-	@Override
-	public double getValue() {
-		return value;
-	}
-
-	public void setValue(double value) {
-		this.value = value;
-	}
-
-	@Override
-	public YarnNumber add(double value) {
-		return new NumberLiteral(this.value + value);
-	}
-
-	@Override
-	public YarnNumber subtract(double value) {
-		return new NumberLiteral(this.value - value);
-	}
-
-	@Override
-	public YarnNumber multiply(double value) {
-		return new NumberLiteral(this.value * value);
-	}
-
-	@Override
-	public YarnNumber divide(double value) {
-		return new NumberLiteral(this.value / value);
-	}
+	public double getValue();
 	
-	@Override
-	public YarnNumber modulus(double value) {
-		return new NumberLiteral(this.value % value);
-	}
+	public YarnNumber add(double value);
+	
+	public YarnNumber subtract(double value);
+	
+	public YarnNumber multiply(double value);
+	
+	public YarnNumber divide(double value);
+	
+	public YarnNumber modulus(double value);
 }

@@ -116,6 +116,23 @@ public class YarnState {
 		return variable;
 	}
 	
+	public YarnVariable put(String variableName, YarnVariable value) {
+		switch(value.getType()) {
+		case BOOLEAN:
+			return put(variableName, ((BooleanVariable) value).isValue());
+		case NUMBER:
+			return put(variableName, ((NumberVariable) value).getValue());
+		case STRING:
+		default:
+			return put(variableName, ((StringVariable) value).getValue());
+		}
+	}
+	
+	public YarnVariable putNull(String variableName) {
+		String value = null;
+		return put(variableName, value);
+	}
+	
 	public String getCurrentNode() {
 		return currentNode;
 	}

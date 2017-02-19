@@ -28,6 +28,13 @@ import java.util.List;
 import org.mini2Dx.yarn.YarnExecutionListener;
 import org.mini2Dx.yarn.YarnState;
 import org.mini2Dx.yarn.execution.YarnExecutionException;
+import org.mini2Dx.yarn.parser.YarnParser.NumericOperationExpressionContext;
+import org.mini2Dx.yarn.parser.YarnParser.NumericOperatorContext;
+import org.mini2Dx.yarn.variable.NumberLiteral;
+import org.mini2Dx.yarn.variable.NumberVariable;
+import org.mini2Dx.yarn.variable.YarnNumber;
+import org.mini2Dx.yarn.variable.YarnVariable;
+import org.mini2Dx.yarn.variable.YarnVariableType;
 
 /**
  * Base class for Yarn operations
@@ -65,5 +72,67 @@ public abstract class YarnOperation {
 	 */
 	public int getLineNumber() {
 		return lineNumber;
+	}
+	
+	/**
+	 * Resolves a numeric operation
+	 * @param state The current {@link YarnState}
+	 * @param ctx The parsed {@link NumericOperationExpressionContext}
+	 * @return A {@link YarnNumber} of the result
+	 * @throws YarnExecutionException Thrown if the operation does not have numeric parameters (e.g. a variable resolves as a string)
+	 */
+	public static YarnNumber resolve(YarnState state, NumericOperationExpressionContext ctx) throws YarnExecutionException {
+		for (int i = 0; i < ctx.VariableLiteral().size(); i++) {
+			YarnVariable variable = state.get(ctx.VariableLiteral(i).getText().trim());
+			if (variable.getType() != YarnVariableType.NUMBER) {
+				throw new YarnExecutionException("Variable '" + variable.getName() + "' is not a number");
+			}
+		}
+
+		YarnNumber result = ctx.NumberLiteral(0) != null
+				? new NumberLiteral(Double.parseDouble(ctx.NumberLiteral(0).getText().trim()))
+				: (NumberVariable) state.get(ctx.VariableLiteral(0).getText().trim());
+		
+		if(ctx.valueExpression() != null) {
+			if(ctx.valueExpression().NumberLiteral() != null) {
+				result = resolve(result, new NumberLiteral(Double.valueOf(ctx.valueExpression().NumberLiteral().getText().trim())), ctx.numericOperator());
+			} else if(ctx.VariableLiteral() != null) {
+				YarnNumber variableNumber = (NumberVariable) state.get(ctx.valueExpression().VariableLiteral().getText().trim());
+				result = resolve(result, variableNumber, ctx.numericOperator());
+			} else if (ctx.valueExpression().numericOperationExpression() != null) {
+				result = resolve(result, resolve(state, ctx.valueExpression().numericOperationExpression()), ctx.numericOperator());
+			} else {
+				throw new YarnExecutionException("Expression '" + ctx.valueExpression().getText().trim() + "' is not numeric");
+			}
+		} else if(ctx.NumberLiteral().size() > 1) {
+			//Adding 2 numbers
+			result = resolve(result, new NumberLiteral(Double.parseDouble(ctx.NumberLiteral(1).getText().trim())), ctx.numericOperator());
+		} else if(ctx.VariableLiteral().size() > 1) {
+			//Adding 2 variables
+			result = resolve(result, ((NumberVariable) state.get(ctx.VariableLiteral(0).getText().trim())), ctx.numericOperator());
+		} else {
+			//Adding a number to a variable
+			result = resolve(result, ((NumberVariable) state.get(ctx.VariableLiteral(0).getText().trim())), ctx.numericOperator());
+		}
+		return result;
+	}
+	
+	private static YarnNumber resolve(YarnNumber a, YarnNumber b, NumericOperatorContext ctx) {
+		if(ctx.PLUS() != null) {
+			return a.add(b.getValue());
+		}
+		if(ctx.MINUS() != null) {
+			return a.subtract(b.getValue());
+		}
+		if(ctx.MULTIPLY() != null) {
+			return a.multiply(b.getValue());
+		}
+		if(ctx.DIVIDE() != null) {
+			return a.divide(b.getValue());
+		}
+		if(ctx.MODULUS() != null) {
+			return a.modulus(b.getValue());
+		}
+		return a;
 	}
 }

@@ -26,21 +26,17 @@ package org.mini2Dx.yarn.variable;
 /**
  *
  */
-public class NumberVariable extends YarnVariable implements YarnNumber {
-	private double value;
-	
-	public NumberVariable(String name, double value) {
-		super(name, YarnVariableType.NUMBER);
+public class NumberLiteral implements YarnNumber {
+	private final double value;
+
+	public NumberLiteral(double value) {
+		super();
 		this.value = value;
 	}
 
 	@Override
 	public double getValue() {
 		return value;
-	}
-
-	public void setValue(double value) {
-		this.value = value;
 	}
 
 	@Override
@@ -62,7 +58,7 @@ public class NumberVariable extends YarnVariable implements YarnNumber {
 	public YarnNumber divide(double value) {
 		return new NumberLiteral(this.value / value);
 	}
-	
+
 	@Override
 	public YarnNumber modulus(double value) {
 		return new NumberLiteral(this.value % value);

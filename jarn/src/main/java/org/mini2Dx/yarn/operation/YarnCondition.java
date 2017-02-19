@@ -21,50 +21,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package org.mini2Dx.yarn.variable;
+package org.mini2Dx.yarn.operation;
 
 /**
  *
  */
-public class NumberVariable extends YarnVariable implements YarnNumber {
-	private double value;
-	
-	public NumberVariable(String name, double value) {
-		super(name, YarnVariableType.NUMBER);
-		this.value = value;
-	}
+public class YarnCondition {
 
-	@Override
-	public double getValue() {
-		return value;
-	}
-
-	public void setValue(double value) {
-		this.value = value;
-	}
-
-	@Override
-	public YarnNumber add(double value) {
-		return new NumberLiteral(this.value + value);
-	}
-
-	@Override
-	public YarnNumber subtract(double value) {
-		return new NumberLiteral(this.value - value);
-	}
-
-	@Override
-	public YarnNumber multiply(double value) {
-		return new NumberLiteral(this.value * value);
-	}
-
-	@Override
-	public YarnNumber divide(double value) {
-		return new NumberLiteral(this.value / value);
-	}
-	
-	@Override
-	public YarnNumber modulus(double value) {
-		return new NumberLiteral(this.value % value);
-	}
 }

@@ -134,8 +134,10 @@ assignExpression
 	
 numericOperationExpression
 	:	VariableLiteral WHITESPACE* numericOperator WHITESPACE* valueExpression
+	|	NumberLiteral WHITESPACE* numericOperator WHITESPACE* valueExpression
 	|	VariableLiteral WHITESPACE* numericOperator WHITESPACE* VariableLiteral
 	|	VariableLiteral WHITESPACE* numericOperator WHITESPACE* NumberLiteral
+	|	NumberLiteral WHITESPACE* numericOperator WHITESPACE* VariableLiteral
 	|	NumberLiteral WHITESPACE* numericOperator WHITESPACE* NumberLiteral
 	;
 	

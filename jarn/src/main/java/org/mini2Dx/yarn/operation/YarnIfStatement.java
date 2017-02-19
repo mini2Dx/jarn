@@ -23,56 +23,38 @@
  */
 package org.mini2Dx.yarn.operation;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.mini2Dx.yarn.YarnExecutionListener;
 import org.mini2Dx.yarn.YarnState;
 import org.mini2Dx.yarn.execution.YarnExecutionException;
-import org.mini2Dx.yarn.parser.YarnParser.ValueExpressionContext;
 
 /**
  *
  */
-public class YarnAssign extends YarnOperation {
-	private final String variableName;
-	private final ValueExpressionContext valueExpression;
+public class YarnIfStatement extends YarnOperation {
+	private final List<YarnCondition> conditions = new ArrayList<YarnCondition>();
 	
-	public YarnAssign(int operationIndex, int lineNumber, String variableName, ValueExpressionContext valueExpression) {
+	private int failureOperationIndex;
+
+	public YarnIfStatement(int operationIndex, int lineNumber) {
 		super(operationIndex, lineNumber);
-		this.variableName = variableName;
-		this.valueExpression = valueExpression;
 	}
 
 	@Override
 	public int resume(YarnState yarnState, List<YarnExecutionListener> listeners) throws YarnExecutionException {
-		assignTo(yarnState, variableName);
-		return operationIndex + 1;
+		if(eval(yarnState)) {
+			return operationIndex + 1;
+		}
+		return failureOperationIndex;
 	}
 
-	private void assignTo(YarnState state, String variableName) throws YarnExecutionException {
-		if (valueExpression.NullLiteral() != null) {
-			state.putNull(variableName);
-			return;
-		}
-		if (valueExpression.BooleanLiteral() != null) {
-			state.put(variableName, Boolean.parseBoolean(valueExpression.BooleanLiteral().getText().trim()));
-			return;
-		}
-		if (valueExpression.NumberLiteral() != null) {
-			state.put(variableName, Double.parseDouble(valueExpression.NullLiteral().getText().trim()));
-			return;
-		}
-		if (valueExpression.StringLiteral() != null) {
-			state.put(variableName, valueExpression.StringLiteral().getText().trim());
-			return;
-		}
-		if (valueExpression.VariableLiteral() != null) {
-			state.put(variableName, state.get(valueExpression.VariableLiteral().getText().trim()));
-			return;
-		}
-		if (valueExpression.numericOperationExpression() != null) {
-			state.put(variableName, YarnOperation.resolve(state, valueExpression.numericOperationExpression()).getValue());
-			return;
-		}
+	public boolean eval(YarnState yarnState) {
+		return false;
+	}
+
+	public void setFailureOperationIndex(int failureOperationIndex) {
+		this.failureOperationIndex = failureOperationIndex;
 	}
 }
