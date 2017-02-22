@@ -28,13 +28,17 @@ import java.util.List;
 import org.mini2Dx.yarn.YarnExecutionListener;
 import org.mini2Dx.yarn.YarnState;
 import org.mini2Dx.yarn.execution.YarnExecutionException;
+import org.mini2Dx.yarn.literal.BooleanLiteral;
+import org.mini2Dx.yarn.literal.NumberLiteral;
+import org.mini2Dx.yarn.literal.StringLiteral;
 import org.mini2Dx.yarn.parser.YarnParser.NumericOperationExpressionContext;
 import org.mini2Dx.yarn.parser.YarnParser.NumericOperatorContext;
-import org.mini2Dx.yarn.variable.NumberLiteral;
+import org.mini2Dx.yarn.parser.YarnParser.ValueExpressionContext;
+import org.mini2Dx.yarn.types.YarnNumber;
+import org.mini2Dx.yarn.types.YarnValue;
 import org.mini2Dx.yarn.variable.NumberVariable;
-import org.mini2Dx.yarn.variable.YarnNumber;
+import org.mini2Dx.yarn.variable.YarnType;
 import org.mini2Dx.yarn.variable.YarnVariable;
-import org.mini2Dx.yarn.variable.YarnVariableType;
 
 /**
  * Base class for Yarn operations
@@ -74,6 +78,28 @@ public abstract class YarnOperation {
 		return lineNumber;
 	}
 	
+	public static YarnValue resolve(YarnState state, ValueExpressionContext ctx) throws YarnExecutionException {
+		if (ctx.NullLiteral() != null) {
+			return null;
+		}
+		if (ctx.BooleanLiteral() != null) {
+			return new BooleanLiteral(Boolean.parseBoolean(ctx.BooleanLiteral().getText().trim()));
+		}
+		if (ctx.NumberLiteral() != null) {
+			return new NumberLiteral(Double.parseDouble(ctx.NumberLiteral().getText().trim()));
+		}
+		if (ctx.StringLiteral() != null) {
+			return new StringLiteral(ctx.StringLiteral().getText().trim());
+		}
+		if (ctx.VariableLiteral() != null) {
+			return state.get(ctx.VariableLiteral().getText().trim());
+		}
+		if (ctx.numericOperationExpression() != null) {
+			return YarnOperation.resolve(state, ctx.numericOperationExpression());
+		}
+		throw new YarnExecutionException("Could not resolve expression " + ctx.getText().trim() + " @ line " + ctx.getStart().getLine());
+	}
+	
 	/**
 	 * Resolves a numeric operation
 	 * @param state The current {@link YarnState}
@@ -81,10 +107,10 @@ public abstract class YarnOperation {
 	 * @return A {@link YarnNumber} of the result
 	 * @throws YarnExecutionException Thrown if the operation does not have numeric parameters (e.g. a variable resolves as a string)
 	 */
-	public static YarnNumber resolve(YarnState state, NumericOperationExpressionContext ctx) throws YarnExecutionException {
+	private static YarnNumber resolve(YarnState state, NumericOperationExpressionContext ctx) throws YarnExecutionException {
 		for (int i = 0; i < ctx.VariableLiteral().size(); i++) {
 			YarnVariable variable = state.get(ctx.VariableLiteral(i).getText().trim());
-			if (variable.getType() != YarnVariableType.NUMBER) {
+			if (variable.getType() != YarnType.NUMBER) {
 				throw new YarnExecutionException("Variable '" + variable.getName() + "' is not a number");
 			}
 		}

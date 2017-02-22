@@ -21,52 +21,22 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package org.mini2Dx.yarn.variable;
-
-import org.mini2Dx.yarn.execution.YarnTypeMismatchException;
-import org.mini2Dx.yarn.literal.BooleanLiteral;
-import org.mini2Dx.yarn.types.YarnBoolean;
-import org.mini2Dx.yarn.types.YarnValue;
+package org.mini2Dx.yarn.types;
 
 /**
  *
  */
-public class BooleanVariable extends YarnVariable implements YarnBoolean {
-	private boolean value;
-
-	public BooleanVariable(String name, boolean value) {
-		super(name, YarnType.BOOLEAN);
-		this.value = value;
-	}
-
-	@Override
-	public boolean getValue() {
-		return value;
-	}
+public interface YarnNumber extends YarnValue {
 	
-	public void setValue(boolean value) {
-		this.value = value;
-	}
-
-	@Override
-	public YarnBoolean and(boolean value) {
-		return new BooleanLiteral(this.value && value);
-	}
-
-	@Override
-	public YarnBoolean or(boolean value) {
-		return new BooleanLiteral(this.value || value);
-	}
+	public double getValue();
 	
-	@Override
-	public int compareTo(YarnValue o) {
-		switch(o.getType()) {
-		case BOOLEAN:
-			return Boolean.compare(value, ((YarnBoolean) o).getValue());
-		case NUMBER:
-		case STRING:
-		default:
-			throw new YarnTypeMismatchException("compare", getType(), o.getType());
-		}
-	}
+	public YarnNumber add(double value);
+	
+	public YarnNumber subtract(double value);
+	
+	public YarnNumber multiply(double value);
+	
+	public YarnNumber divide(double value);
+	
+	public YarnNumber modulus(double value);
 }

@@ -26,7 +26,7 @@ package org.mini2Dx.yarn.variable;
 /**
  *
  */
-public enum YarnVariableType {
+public enum YarnType {
 	BOOLEAN,
 	NUMBER,
 	STRING

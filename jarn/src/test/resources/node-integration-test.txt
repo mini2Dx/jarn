@@ -1,0 +1,15 @@
+title: Start
+tags: yellow green
+colorID: 0
+position: 444,216
+---
+<<move bob to wall>>
+<<if $keys > 7>>
+    Bob: You win the game with {{ $keys }} keys!
+<<elseif $door_unlocked or $keys == 0>>
+    You lose the game!
+<<else>>
+    You failed!
+<<endif>>
+End of node!
+===

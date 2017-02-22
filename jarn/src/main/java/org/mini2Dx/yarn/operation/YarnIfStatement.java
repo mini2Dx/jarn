@@ -29,17 +29,23 @@ import java.util.List;
 import org.mini2Dx.yarn.YarnExecutionListener;
 import org.mini2Dx.yarn.YarnState;
 import org.mini2Dx.yarn.execution.YarnExecutionException;
+import org.mini2Dx.yarn.parser.YarnParser.BoolOperatorContext;
 
 /**
  *
  */
 public class YarnIfStatement extends YarnOperation {
 	private final List<YarnCondition> conditions = new ArrayList<YarnCondition>();
+	private final List<BoolOperatorContext> operators = new ArrayList<BoolOperatorContext>();
+	
+	private final IfStatementType statementType;
 	
 	private int failureOperationIndex;
+	private int endBlockOperationindex;
 
-	public YarnIfStatement(int operationIndex, int lineNumber) {
+	public YarnIfStatement(int operationIndex, int lineNumber, IfStatementType statementType) {
 		super(operationIndex, lineNumber);
+		this.statementType = statementType;
 	}
 
 	@Override
@@ -50,11 +56,55 @@ public class YarnIfStatement extends YarnOperation {
 		return failureOperationIndex;
 	}
 
-	public boolean eval(YarnState yarnState) {
-		return false;
+	public boolean eval(YarnState yarnState) throws YarnExecutionException {
+		boolean result = true;
+		for(int i = 0; i < conditions.size(); i++) {
+			boolean nextResult = conditions.get(i).eval(yarnState);
+			if(i > 0) {
+				BoolOperatorContext operatorContext = operators.get(i - 1);
+				if(operatorContext.AND() != null) {
+					result = result && nextResult;
+				} else if(operatorContext.OR() != null) {
+					result = result || nextResult;
+					
+					if(result) {
+						return true;
+					}
+				}
+			} else {
+				result = nextResult;
+			}
+		}
+		return result;
+	}
+	
+	public void appendCondition(YarnCondition condition) {
+		conditions.add(condition);
+	}
+	
+	public void appendOperator(BoolOperatorContext ctx) {
+		operators.add(ctx);
+	}
+
+	public IfStatementType getStatementType() {
+		return statementType;
 	}
 
 	public void setFailureOperationIndex(int failureOperationIndex) {
 		this.failureOperationIndex = failureOperationIndex;
+	}
+
+	public int getEndBlockOperationindex() {
+		return endBlockOperationindex;
+	}
+
+	public void setEndBlockOperationindex(int endBlockOperationindex) {
+		this.endBlockOperationindex = endBlockOperationindex;
+	}
+	
+	public enum IfStatementType {
+		IF,
+		ELSEIF,
+		ELSE
 	}
 }

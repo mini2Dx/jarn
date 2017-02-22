@@ -21,52 +21,27 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package org.mini2Dx.yarn.variable;
+package org.mini2Dx.yarn.operation;
 
-import org.mini2Dx.yarn.execution.YarnTypeMismatchException;
-import org.mini2Dx.yarn.literal.BooleanLiteral;
-import org.mini2Dx.yarn.types.YarnBoolean;
-import org.mini2Dx.yarn.types.YarnValue;
+import java.util.List;
+
+import org.mini2Dx.yarn.YarnExecutionListener;
+import org.mini2Dx.yarn.YarnState;
+import org.mini2Dx.yarn.execution.YarnExecutionException;
 
 /**
  *
  */
-public class BooleanVariable extends YarnVariable implements YarnBoolean {
-	private boolean value;
+public class YarnEndIfBlock extends YarnOperation {
+	private final YarnIfStatement ifStatement;
 
-	public BooleanVariable(String name, boolean value) {
-		super(name, YarnType.BOOLEAN);
-		this.value = value;
-	}
-
-	@Override
-	public boolean getValue() {
-		return value;
-	}
-	
-	public void setValue(boolean value) {
-		this.value = value;
+	public YarnEndIfBlock(int operationIndex, YarnIfStatement ifStatement) {
+		super(operationIndex, -1);
+		this.ifStatement = ifStatement;
 	}
 
 	@Override
-	public YarnBoolean and(boolean value) {
-		return new BooleanLiteral(this.value && value);
-	}
-
-	@Override
-	public YarnBoolean or(boolean value) {
-		return new BooleanLiteral(this.value || value);
-	}
-	
-	@Override
-	public int compareTo(YarnValue o) {
-		switch(o.getType()) {
-		case BOOLEAN:
-			return Boolean.compare(value, ((YarnBoolean) o).getValue());
-		case NUMBER:
-		case STRING:
-		default:
-			throw new YarnTypeMismatchException("compare", getType(), o.getType());
-		}
+	public int resume(YarnState yarnState, List<YarnExecutionListener> listeners) throws YarnExecutionException {
+		return ifStatement.getEndBlockOperationindex();
 	}
 }

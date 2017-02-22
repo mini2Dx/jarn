@@ -36,7 +36,10 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.mini2Dx.yarn.YarnNode;
 import org.mini2Dx.yarn.operation.YarnAssign;
 import org.mini2Dx.yarn.operation.YarnCommand;
+import org.mini2Dx.yarn.operation.YarnCondition;
+import org.mini2Dx.yarn.operation.YarnEndIfBlock;
 import org.mini2Dx.yarn.operation.YarnIfStatement;
+import org.mini2Dx.yarn.operation.YarnIfStatement.IfStatementType;
 import org.mini2Dx.yarn.operation.YarnLine;
 import org.mini2Dx.yarn.operation.YarnOption;
 import org.mini2Dx.yarn.operation.YarnOptionGroup;
@@ -71,8 +74,14 @@ public class YarnTreeParser extends YarnBaseListener {
 				if (nextLine.startsWith("===")) {
 					break;
 				}
+				if (nextLine.equals("\r\n")) {
+					continue;
+				}
+				if (nextLine.equals("\n")) {
+					continue;
+				}
 				nodeContent.append(nextLine);
-				nodeContent.append('\n');
+				nodeContent.append(System.lineSeparator());
 			}
 			parseNodeContent(nodeContent.toString());
 			result.add(currentNode);
@@ -117,27 +126,61 @@ public class YarnTreeParser extends YarnBaseListener {
 
 	@Override
 	public void exitIfExpression(IfExpressionContext ctx) {
-		YarnIfStatement ifStatement = new YarnIfStatement(currentNode.getTotalOperations(), ctx.getStart().getLine());
+		YarnIfStatement ifStatement = new YarnIfStatement(currentNode.getTotalOperations(), ctx.getStart().getLine(), IfStatementType.IF);
+		
+		for(int i = 0; i < ctx.conditionExpression().size(); i++) {
+			ifStatement.appendCondition(new YarnCondition(ctx.getStart().getLine(), ctx.conditionExpression().get(i)));
+			
+			if(i > 0) {
+				ifStatement.appendOperator(ctx.boolOperator(i - 1));
+			}
+		}
 		currentNode.appendOperation(ifStatement);
 		ifStack.push(ifStatement);
 	}
 
 	@Override
 	public void exitElseifExpression(ElseifExpressionContext ctx) {
-		YarnIfStatement ifStatement = ifStack.pop();
+		currentNode.appendOperation(new YarnEndIfBlock(currentNode.getTotalOperations(), ifStack.peek()));
+		
+		YarnIfStatement ifStatement = ifStack.peek();
 		ifStatement.setFailureOperationIndex(currentNode.getTotalOperations());
+		
+		ifStatement = new YarnIfStatement(currentNode.getTotalOperations(), ctx.getStart().getLine(), IfStatementType.ELSEIF);
+		
+		for(int i = 0; i < ctx.conditionExpression().size(); i++) {
+			ifStatement.appendCondition(new YarnCondition(ctx.getStart().getLine(), ctx.conditionExpression().get(i)));
+			
+			if(i > 0) {
+				ifStatement.appendOperator(ctx.boolOperator(i - 1));
+			}
+		}
+		currentNode.appendOperation(ifStatement);
+		ifStack.push(ifStatement);
 	}
 
 	@Override
 	public void exitElseStatement(ElseStatementContext ctx) {
-		YarnIfStatement ifStatement = ifStack.pop();
+		currentNode.appendOperation(new YarnEndIfBlock(currentNode.getTotalOperations(), ifStack.peek()));
+		
+		YarnIfStatement ifStatement = ifStack.peek();
 		ifStatement.setFailureOperationIndex(currentNode.getTotalOperations());
+		
+		ifStatement = new YarnIfStatement(currentNode.getTotalOperations(), ctx.getStart().getLine(), IfStatementType.ELSE);
+		currentNode.appendOperation(ifStatement);
+		ifStack.push(ifStatement);
 	}
 
 	@Override
 	public void exitEndifStatement(EndifStatementContext ctx) {
 		YarnIfStatement ifStatement = ifStack.pop();
 		ifStatement.setFailureOperationIndex(currentNode.getTotalOperations());
+		ifStatement.setEndBlockOperationindex(currentNode.getTotalOperations());
+		
+		while(ifStatement.getStatementType() != IfStatementType.IF) {
+			ifStatement = ifStack.pop();
+			ifStatement.setEndBlockOperationindex(currentNode.getTotalOperations());
+		}
 	}
 
 	@Override

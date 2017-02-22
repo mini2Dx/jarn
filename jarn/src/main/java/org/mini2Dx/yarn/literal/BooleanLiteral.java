@@ -21,67 +21,53 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package org.mini2Dx.yarn.variable;
+package org.mini2Dx.yarn.literal;
 
 import org.mini2Dx.yarn.execution.YarnTypeMismatchException;
-import org.mini2Dx.yarn.literal.NumberLiteral;
-import org.mini2Dx.yarn.types.YarnNumber;
+import org.mini2Dx.yarn.types.YarnBoolean;
 import org.mini2Dx.yarn.types.YarnValue;
+import org.mini2Dx.yarn.variable.YarnType;
 
 /**
  *
  */
-public class NumberVariable extends YarnVariable implements YarnNumber {
-	private double value;
-	
-	public NumberVariable(String name, double value) {
-		super(name, YarnType.NUMBER);
+public class BooleanLiteral implements YarnBoolean {
+	private final boolean value;
+
+	public BooleanLiteral(boolean value) {
+		super();
 		this.value = value;
 	}
 
 	@Override
-	public double getValue() {
+	public boolean getValue() {
 		return value;
 	}
 
-	public void setValue(double value) {
-		this.value = value;
+	@Override
+	public YarnBoolean and(boolean value) {
+		return new BooleanLiteral(this.value && value);
 	}
 
 	@Override
-	public YarnNumber add(double value) {
-		return new NumberLiteral(this.value + value);
-	}
-
-	@Override
-	public YarnNumber subtract(double value) {
-		return new NumberLiteral(this.value - value);
-	}
-
-	@Override
-	public YarnNumber multiply(double value) {
-		return new NumberLiteral(this.value * value);
-	}
-
-	@Override
-	public YarnNumber divide(double value) {
-		return new NumberLiteral(this.value / value);
+	public YarnBoolean or(boolean value) {
+		return new BooleanLiteral(this.value || value);
 	}
 	
 	@Override
-	public YarnNumber modulus(double value) {
-		return new NumberLiteral(this.value % value);
-	}
-
-	@Override
 	public int compareTo(YarnValue o) {
 		switch(o.getType()) {
-		case NUMBER:
-			return Double.compare(value, ((YarnNumber) o).getValue());
 		case BOOLEAN:
+			return Boolean.compare(value, ((YarnBoolean) o).getValue());
+		case NUMBER:
 		case STRING:
 		default:
 			throw new YarnTypeMismatchException("compare", getType(), o.getType());
 		}
+	}
+
+	@Override
+	public YarnType getType() {
+		return YarnType.BOOLEAN;
 	}
 }

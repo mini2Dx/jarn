@@ -21,52 +21,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package org.mini2Dx.yarn.variable;
+package org.mini2Dx.yarn.types;
 
-import org.mini2Dx.yarn.execution.YarnTypeMismatchException;
-import org.mini2Dx.yarn.literal.BooleanLiteral;
-import org.mini2Dx.yarn.types.YarnBoolean;
-import org.mini2Dx.yarn.types.YarnValue;
+import org.mini2Dx.yarn.variable.YarnType;
 
 /**
  *
  */
-public class BooleanVariable extends YarnVariable implements YarnBoolean {
-	private boolean value;
+public interface YarnValue extends Comparable<YarnValue> {
 
-	public BooleanVariable(String name, boolean value) {
-		super(name, YarnType.BOOLEAN);
-		this.value = value;
-	}
-
-	@Override
-	public boolean getValue() {
-		return value;
-	}
-	
-	public void setValue(boolean value) {
-		this.value = value;
-	}
-
-	@Override
-	public YarnBoolean and(boolean value) {
-		return new BooleanLiteral(this.value && value);
-	}
-
-	@Override
-	public YarnBoolean or(boolean value) {
-		return new BooleanLiteral(this.value || value);
-	}
-	
-	@Override
-	public int compareTo(YarnValue o) {
-		switch(o.getType()) {
-		case BOOLEAN:
-			return Boolean.compare(value, ((YarnBoolean) o).getValue());
-		case NUMBER:
-		case STRING:
-		default:
-			throw new YarnTypeMismatchException("compare", getType(), o.getType());
-		}
-	}
+	public YarnType getType();
 }

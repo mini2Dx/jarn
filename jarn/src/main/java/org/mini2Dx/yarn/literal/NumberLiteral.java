@@ -21,31 +21,27 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package org.mini2Dx.yarn.variable;
+package org.mini2Dx.yarn.literal;
 
 import org.mini2Dx.yarn.execution.YarnTypeMismatchException;
-import org.mini2Dx.yarn.literal.NumberLiteral;
 import org.mini2Dx.yarn.types.YarnNumber;
 import org.mini2Dx.yarn.types.YarnValue;
+import org.mini2Dx.yarn.variable.YarnType;
 
 /**
  *
  */
-public class NumberVariable extends YarnVariable implements YarnNumber {
-	private double value;
-	
-	public NumberVariable(String name, double value) {
-		super(name, YarnType.NUMBER);
+public class NumberLiteral implements YarnNumber {
+	private final double value;
+
+	public NumberLiteral(double value) {
+		super();
 		this.value = value;
 	}
 
 	@Override
 	public double getValue() {
 		return value;
-	}
-
-	public void setValue(double value) {
-		this.value = value;
 	}
 
 	@Override
@@ -67,12 +63,12 @@ public class NumberVariable extends YarnVariable implements YarnNumber {
 	public YarnNumber divide(double value) {
 		return new NumberLiteral(this.value / value);
 	}
-	
+
 	@Override
 	public YarnNumber modulus(double value) {
 		return new NumberLiteral(this.value % value);
 	}
-
+	
 	@Override
 	public int compareTo(YarnValue o) {
 		switch(o.getType()) {
@@ -83,5 +79,10 @@ public class NumberVariable extends YarnVariable implements YarnNumber {
 		default:
 			throw new YarnTypeMismatchException("compare", getType(), o.getType());
 		}
+	}
+	
+	@Override
+	public YarnType getType() {
+		return YarnType.NUMBER;
 	}
 }

@@ -1,0 +1,28 @@
+title: Start
+tags: yellow green
+colorID: 0
+position: 444,216
+---
+<<start game>>
+The game begins.
+[[Node1]]
+[[Node2]]
+===
+title: Node1
+tags: 
+colorID: 0
+position: 784,240
+---
+<<set $keys to 1>>
+Bob: This is exciting! I have {{ $keys }} keys!
+<<alter game>>
+[[Node2]]
+===
+title: Node2
+tags: 
+colorID: 0
+position: 820,240
+---
+The game ends.
+<<end game>>
+===

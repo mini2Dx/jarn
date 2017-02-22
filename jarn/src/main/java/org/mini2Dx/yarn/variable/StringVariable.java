@@ -23,14 +23,18 @@
  */
 package org.mini2Dx.yarn.variable;
 
+import org.mini2Dx.yarn.execution.YarnTypeMismatchException;
+import org.mini2Dx.yarn.types.YarnString;
+import org.mini2Dx.yarn.types.YarnValue;
+
 /**
  *
  */
-public class StringVariable extends YarnVariable {
+public class StringVariable extends YarnVariable implements YarnString {
 	private String value;
 
 	public StringVariable(String name, String value) {
-		super(name, YarnVariableType.STRING);
+		super(name, YarnType.STRING);
 		this.value = value;
 	}
 
@@ -40,5 +44,51 @@ public class StringVariable extends YarnVariable {
 
 	public void setValue(String value) {
 		this.value = value;
+	}
+
+	@Override
+	public int compareTo(YarnValue o) {
+		switch(o.getType()) {
+		case STRING:
+			YarnString oString = (YarnString) o;
+			if(value == null) {
+				if(oString.getValue() != null) {
+					return -1;
+				}
+				return 0;
+			} else if(oString.getValue() == null) {
+				return 1;
+			}
+			return value.compareTo(oString.getValue());
+		case BOOLEAN:
+		case NUMBER:
+		default:
+			throw new YarnTypeMismatchException("compare", getType(), o.getType());
+		}
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((value == null) ? 0 : value.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		StringVariable other = (StringVariable) obj;
+		if (value == null) {
+			if (other.value != null)
+				return false;
+		} else if (!value.equals(other.value))
+			return false;
+		return true;
 	}
 }

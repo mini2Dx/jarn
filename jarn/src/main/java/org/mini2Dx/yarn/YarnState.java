@@ -23,16 +23,21 @@
  */
 package org.mini2Dx.yarn;
 
+import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.mini2Dx.yarn.types.YarnBoolean;
+import org.mini2Dx.yarn.types.YarnNumber;
+import org.mini2Dx.yarn.types.YarnString;
+import org.mini2Dx.yarn.types.YarnValue;
 import org.mini2Dx.yarn.variable.BooleanVariable;
 import org.mini2Dx.yarn.variable.NumberVariable;
 import org.mini2Dx.yarn.variable.StringVariable;
+import org.mini2Dx.yarn.variable.YarnType;
 import org.mini2Dx.yarn.variable.YarnVariable;
-import org.mini2Dx.yarn.variable.YarnVariableType;
 
 import com.github.mustachejava.DefaultMustacheFactory;
 import com.github.mustachejava.Mustache;
@@ -67,7 +72,7 @@ public class YarnState {
 			return result;
 		}
 		YarnVariable variable = variables.get(variableName);
-		if(variable.getType() != YarnVariableType.NUMBER) {
+		if(variable.getType() != YarnType.NUMBER) {
 			variable = new NumberVariable(variableName, value);
 			variables.put(variableName, variable);
 		} else {
@@ -86,7 +91,7 @@ public class YarnState {
 			return result;
 		}
 		YarnVariable variable = variables.get(variableName);
-		if(variable.getType() != YarnVariableType.BOOLEAN) {
+		if(variable.getType() != YarnType.BOOLEAN) {
 			variable = new BooleanVariable(variableName, value);
 			variables.put(variableName, variable);
 		} else {
@@ -105,7 +110,7 @@ public class YarnState {
 			return result;
 		}
 		YarnVariable variable = variables.get(variableName);
-		if(variable.getType() != YarnVariableType.STRING) {
+		if(variable.getType() != YarnType.STRING) {
 			variable = new StringVariable(variableName, value);
 			variables.put(variableName, variable);
 		} else {
@@ -119,7 +124,7 @@ public class YarnState {
 	public YarnVariable put(String variableName, YarnVariable value) {
 		switch(value.getType()) {
 		case BOOLEAN:
-			return put(variableName, ((BooleanVariable) value).isValue());
+			return put(variableName, ((BooleanVariable) value).getValue());
 		case NUMBER:
 			return put(variableName, ((NumberVariable) value).getValue());
 		case STRING:
@@ -131,6 +136,18 @@ public class YarnState {
 	public YarnVariable putNull(String variableName) {
 		String value = null;
 		return put(variableName, value);
+	}
+	
+	public YarnVariable put(String variableName, YarnValue value) {
+		switch(value.getType()) {
+		case BOOLEAN:
+			return put(variableName, ((YarnBoolean) value).getValue());
+		case NUMBER:
+			return put(variableName, ((YarnNumber) value).getValue());
+		case STRING:
+		default:
+			return put(variableName, ((YarnString) value).getValue());
+		}
 	}
 	
 	public String getCurrentNode() {
@@ -161,7 +178,7 @@ public class YarnState {
 	
 	public String applyVariables(String text) {
 		if(!mustacheCache.containsKey(text)) {
-			mustacheCache.put(text, mustacheFactory.compile(text));
+			mustacheCache.put(text, mustacheFactory.compile(new StringReader(text), text));
 		}
 		Mustache mustache = mustacheCache.get(text);
 		

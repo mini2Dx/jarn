@@ -29,6 +29,7 @@ import org.mini2Dx.yarn.YarnExecutionListener;
 import org.mini2Dx.yarn.YarnState;
 import org.mini2Dx.yarn.execution.YarnExecutionException;
 import org.mini2Dx.yarn.parser.YarnParser.ValueExpressionContext;
+import org.mini2Dx.yarn.types.YarnValue;
 
 /**
  *
@@ -50,29 +51,11 @@ public class YarnAssign extends YarnOperation {
 	}
 
 	private void assignTo(YarnState state, String variableName) throws YarnExecutionException {
-		if (valueExpression.NullLiteral() != null) {
+		YarnValue resolvedValue = YarnOperation.resolve(state, valueExpression);
+		if(resolvedValue == null) {
 			state.putNull(variableName);
-			return;
-		}
-		if (valueExpression.BooleanLiteral() != null) {
-			state.put(variableName, Boolean.parseBoolean(valueExpression.BooleanLiteral().getText().trim()));
-			return;
-		}
-		if (valueExpression.NumberLiteral() != null) {
-			state.put(variableName, Double.parseDouble(valueExpression.NullLiteral().getText().trim()));
-			return;
-		}
-		if (valueExpression.StringLiteral() != null) {
-			state.put(variableName, valueExpression.StringLiteral().getText().trim());
-			return;
-		}
-		if (valueExpression.VariableLiteral() != null) {
-			state.put(variableName, state.get(valueExpression.VariableLiteral().getText().trim()));
-			return;
-		}
-		if (valueExpression.numericOperationExpression() != null) {
-			state.put(variableName, YarnOperation.resolve(state, valueExpression.numericOperationExpression()).getValue());
-			return;
+		} else {
+			state.put(variableName, resolvedValue);
 		}
 	}
 }

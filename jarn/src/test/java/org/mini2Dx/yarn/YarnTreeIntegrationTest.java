@@ -21,46 +21,53 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package org.mini2Dx.yarn.variable;
+package org.mini2Dx.yarn;
+
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.LinkedList;
+import java.util.Queue;
+
+import org.junit.Before;
+import org.mini2Dx.yarn.operation.YarnOptionGroup;
+import org.mini2Dx.yarn.parser.YarnParserTest;
 
 /**
- *
+ * Integration tests for {@link YarnTree}
  */
-public class NumberLiteral implements YarnNumber {
-	private final double value;
-
-	public NumberLiteral(double value) {
-		super();
-		this.value = value;
+public class YarnTreeIntegrationTest implements YarnExecutionListener {
+	private final YarnTree yarnTree = new YarnTree();
+	private final Queue<String> expectedCommands = new LinkedList<String>();
+	private final Queue<String> expectedLines = new LinkedList<String>();
+	
+	@Before
+	public void setUp() throws IOException {
+		yarnTree.load(new InputStreamReader(YarnParserTest.class.getResourceAsStream("/tree-integration-test.txt")));
 	}
 
 	@Override
-	public double getValue() {
-		return value;
+	public void onYarnCommand(String command) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
-	public YarnNumber add(double value) {
-		return new NumberLiteral(this.value + value);
+	public void onYarnLine(String character, String text) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
-	public YarnNumber subtract(double value) {
-		return new NumberLiteral(this.value - value);
+	public void onYarnOptionGroup(YarnOptionGroup optionGroup) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
-	public YarnNumber multiply(double value) {
-		return new NumberLiteral(this.value * value);
+	public void onYarnTreeEnd(YarnNode yarnNode) {
+		// TODO Auto-generated method stub
+		
 	}
 
-	@Override
-	public YarnNumber divide(double value) {
-		return new NumberLiteral(this.value / value);
-	}
-
-	@Override
-	public YarnNumber modulus(double value) {
-		return new NumberLiteral(this.value % value);
-	}
+	
 }

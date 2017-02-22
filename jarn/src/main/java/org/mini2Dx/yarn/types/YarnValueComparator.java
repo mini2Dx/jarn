@@ -21,22 +21,34 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package org.mini2Dx.yarn.variable;
+package org.mini2Dx.yarn.types;
 
 /**
  *
  */
-public interface YarnNumber {
+public class YarnValueComparator {
+
+	public static boolean equals(YarnValue left, YarnValue right) {
+		return left.compareTo(right) == 0;
+	}
 	
-	public double getValue();
+	public static boolean notEquals(YarnValue left, YarnValue right) {
+		return left.compareTo(right) != 0;
+	}
 	
-	public YarnNumber add(double value);
+	public static boolean lessThan(YarnValue left, YarnValue right) {
+		return left.compareTo(right) < 0;
+	}
 	
-	public YarnNumber subtract(double value);
+	public static boolean greaterThan(YarnValue left, YarnValue right) {
+		return left.compareTo(right) > 0;
+	}
 	
-	public YarnNumber multiply(double value);
+	public static boolean lessThanOrEqualTo(YarnValue left, YarnValue right) {
+		return left.compareTo(right) <= 0;
+	}
 	
-	public YarnNumber divide(double value);
-	
-	public YarnNumber modulus(double value);
+	public static boolean greaterThanOrEqualTo(YarnValue left, YarnValue right) {
+		return left.compareTo(right) >= 0;
+	}
 }

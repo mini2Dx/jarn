@@ -23,14 +23,16 @@
  */
 package org.mini2Dx.yarn.variable;
 
+import org.mini2Dx.yarn.types.YarnValue;
+
 /**
  *
  */
-public abstract class YarnVariable {
+public abstract class YarnVariable implements YarnValue {
 	private final String name;
-	private final YarnVariableType type;
+	private final YarnType type;
 	
-	public YarnVariable(String name, YarnVariableType type) {
+	public YarnVariable(String name, YarnType type) {
 		super();
 		this.name = name;
 		this.type = type;
@@ -40,7 +42,7 @@ public abstract class YarnVariable {
 		return name;
 	}
 
-	public YarnVariableType getType() {
+	public YarnType getType() {
 		return type;
 	}
 }
