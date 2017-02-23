@@ -5,8 +5,8 @@ position: 444,216
 ---
 <<start game>>
 The game begins.
-[[Node1]]
-[[Node2]]
+[[Go to Node1|Node1]]
+[[Go to Node2|Node2]]
 ===
 title: Node1
 tags: 

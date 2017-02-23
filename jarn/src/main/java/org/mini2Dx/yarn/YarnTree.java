@@ -41,12 +41,17 @@ public class YarnTree {
 	private final List<YarnExecutionListener> listeners = new ArrayList<YarnExecutionListener>(1);
 	private YarnTreeParser treeParser = new YarnTreeParser();
 
+	private boolean noListenersWarningIssued = false;
+
 	/**
 	 * Reads a .yarn.txt file add its nodes to this tree. Note that nodes are
-	 * mapped by their title meaning nodes with the same title will overwrite each other.
+	 * mapped by their title meaning nodes with the same title will overwrite
+	 * each other.
 	 * 
-	 * @param reader The {@link Reader} to read the file from
-	 * @throws IOException Thrown if there is an error deserialising the file
+	 * @param reader
+	 *            The {@link Reader} to read the file from
+	 * @throws IOException
+	 *             Thrown if there is an error deserialising the file
 	 */
 	public void load(Reader reader) throws IOException {
 		List<YarnNode> nodes = treeParser.read(reader);
@@ -63,6 +68,10 @@ public class YarnTree {
 	}
 
 	public void resume(YarnState state) throws YarnExecutionException {
+		if (listeners.isEmpty() && !noListenersWarningIssued) {
+			System.err.println("WARNING: YarnTree instance has no listeners attached.");
+			noListenersWarningIssued = true;
+		}
 		if (state.getCurrentNode() == null) {
 			throw new YarnExecutionException("No current node is set in the YarnState");
 		}
@@ -76,7 +85,9 @@ public class YarnTree {
 
 	/**
 	 * Adds a {@link YarnExecutionListener} to this tree
-	 * @param listener The {@link YarnExecutionListener} to add
+	 * 
+	 * @param listener
+	 *            The {@link YarnExecutionListener} to add
 	 */
 	public void addListener(YarnExecutionListener listener) {
 		listeners.add(listener);
@@ -84,10 +95,13 @@ public class YarnTree {
 
 	/**
 	 * Removes a {@link YarnExecutionListener} from this tree
-	 * @param listener The {@link YarnExecutionListener} to remove
+	 * 
+	 * @param listener
+	 *            The {@link YarnExecutionListener} to remove
 	 */
 	public void removeListener(YarnExecutionListener listener) {
 		listeners.remove(listener);
+		noListenersWarningIssued = false;
 	}
 
 	/**
