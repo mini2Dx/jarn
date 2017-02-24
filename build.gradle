@@ -42,6 +42,7 @@ project(":jarn") {
 	
 	group = 'org.mini2Dx'
     version = '1.0.0-SNAPSHOT'
+    description = 'Java-based interpreter for Yarn'
     
     task copyJarnSourcesToProject(type: Copy, dependsOn: project(":jarn-antlr").compileJava) {
 		from "$projectDir/../jarn-antlr/build/generated-src/antlr/main/"
@@ -78,6 +79,61 @@ project(":jarn") {
 	}
 	
 	compileJava.dependsOn copyJarnSourcesToProject
+	
+	if(project.hasProperty('ossrhUser') && project.hasProperty("release")) {
+		apply plugin: "io.codearte.nexus-staging"
+
+		nexusStaging {
+			packageGroup = 'org.mini2Dx'
+			username = ossrhUser
+			password = ossrhPassword
+		}
+		
+		signing {
+			sign configurations.archives
+		}
+		
+		uploadArchives {
+			repositories {
+				mavenDeployer {
+					// POM signature
+					beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+					// Target repository
+					repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+						authentication(userName: ossrhUser, password: ossrhPassword)
+					}
+					pom.project {
+						name project.name
+						description project.description
+						packaging 'jar'
+						url 'https://github.com/mini2Dx/jarn'
+	
+						scm {
+							connection 'scm:git:https://github.com/mini2Dx/jarn.git'
+							developerConnection 'scm:git:git@github.com:mini2Dx/jarn.git'
+							url 'https://github.com/mini2Dx/jarn.git'
+						}
+	
+						licenses {
+							license {
+								name 'The MIT License (MIT)'
+								url 'https://opensource.org/licenses/MIT'
+								distribution 'repo'
+							}
+						}
+	
+						developers {
+							developer {
+								id = 'tomcashman'
+								name = 'Thomas Cashman'
+								email = 'thomascashman404@gmail.com'
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 }
 
 task wrapper(type: Wrapper) {
