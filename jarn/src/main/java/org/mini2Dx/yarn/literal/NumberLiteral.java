@@ -25,11 +25,11 @@ package org.mini2Dx.yarn.literal;
 
 import org.mini2Dx.yarn.execution.YarnTypeMismatchException;
 import org.mini2Dx.yarn.types.YarnNumber;
+import org.mini2Dx.yarn.types.YarnType;
 import org.mini2Dx.yarn.types.YarnValue;
-import org.mini2Dx.yarn.variable.YarnType;
 
 /**
- *
+ * Represents a Yarn literal number value in expressions
  */
 public class NumberLiteral implements YarnNumber {
 	private final double value;

@@ -24,13 +24,26 @@
 package org.mini2Dx.yarn.types;
 
 /**
- *
+ * Base interface for Yarn booleans
  */
 public interface YarnBoolean extends YarnValue {
-
+	/**
+	 * Returns the underlying boolean value
+	 * @return
+	 */
 	public boolean getValue();
 	
+	/**
+	 * Returns the result of an AND operation with another boolean
+	 * @param value The boolean to AND
+	 * @return A new {@link YarnBoolean} with the result
+	 */
 	public YarnBoolean and(boolean value);
 	
+	/**
+	 * Returns the result of an OR operation with another boolean
+	 * @param value The boolean to OR
+	 * @return A new {@link YarnBoolean} with the result
+	 */
 	public YarnBoolean or(boolean value);
 }

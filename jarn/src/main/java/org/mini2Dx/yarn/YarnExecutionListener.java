@@ -26,7 +26,7 @@ package org.mini2Dx.yarn;
 import org.mini2Dx.yarn.operation.YarnOptionGroup;
 
 /**
- *
+ * Interface for handling Yarn execution events
  */
 public interface YarnExecutionListener {
 

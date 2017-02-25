@@ -29,12 +29,17 @@ import org.mini2Dx.yarn.execution.YarnExecutionException;
 import org.mini2Dx.yarn.operation.YarnOperationGroup;
 
 /**
- *
+ * An individual node in a {@link YarnTree}
  */
 public class YarnNode extends YarnOperationGroup {
 	private final String title;
 	private final String [] tags;
 
+	/**
+	 * Constructor
+	 * @param title The title of the node in Yarn
+	 * @param tags The tags assigned to the node in Yarn
+	 */
 	public YarnNode(String title, String [] tags) {
 		super(0, 0);
 		this.title = title;
@@ -59,10 +64,18 @@ public class YarnNode extends YarnOperationGroup {
 		}
 	}
 
+	/**
+	 * Returns the title of the node
+	 * @return An empty {@link String} if none is set
+	 */
 	public String getTitle() {
 		return title;
 	}
 
+	/**
+	 * Returns the tags of the node
+	 * @return An empty array if none are set
+	 */
 	public String[] getTags() {
 		return tags;
 	}

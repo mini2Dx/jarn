@@ -24,9 +24,13 @@
 package org.mini2Dx.yarn.types;
 
 /**
- *
+ * Base interface for Yarn strings
  */
 public interface YarnString extends YarnValue {
 
+	/**
+	 * Returns the underlying {@link String} value
+	 * @return
+	 */
 	public String getValue();
 }

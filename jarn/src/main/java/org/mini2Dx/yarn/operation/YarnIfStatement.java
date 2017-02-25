@@ -32,7 +32,7 @@ import org.mini2Dx.yarn.execution.YarnExecutionException;
 import org.mini2Dx.yarn.parser.YarnParser.BoolOperatorContext;
 
 /**
- *
+ * Represents an if/elseif/else expression in Yarn
  */
 public class YarnIfStatement extends YarnOperation {
 	private final List<YarnCondition> conditions = new ArrayList<YarnCondition>();

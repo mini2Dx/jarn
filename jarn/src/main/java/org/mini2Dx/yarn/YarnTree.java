@@ -34,7 +34,7 @@ import org.mini2Dx.yarn.execution.YarnExecutionException;
 import org.mini2Dx.yarn.parser.YarnTreeParser;
 
 /**
- *
+ * A dialogue tree built in Yarn
  */
 public class YarnTree {
 	private final Map<String, YarnNode> nodes = new HashMap<String, YarnNode>();
@@ -67,6 +67,11 @@ public class YarnTree {
 		nodes.clear();
 	}
 
+	/**
+	 * Resumes the execution the of the dialogue tree
+	 * @param state The current {@link YarnState}
+	 * @throws YarnExecutionException Thrown if Yarn expressions could not be resolved
+	 */
 	public void resume(YarnState state) throws YarnExecutionException {
 		if (listeners.isEmpty() && !noListenersWarningIssued) {
 			System.err.println("WARNING: YarnTree instance has no listeners attached.");

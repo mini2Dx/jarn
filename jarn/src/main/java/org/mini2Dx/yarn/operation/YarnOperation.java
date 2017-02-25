@@ -35,13 +35,13 @@ import org.mini2Dx.yarn.parser.YarnParser.NumericOperationExpressionContext;
 import org.mini2Dx.yarn.parser.YarnParser.NumericOperatorContext;
 import org.mini2Dx.yarn.parser.YarnParser.ValueExpressionContext;
 import org.mini2Dx.yarn.types.YarnNumber;
+import org.mini2Dx.yarn.types.YarnType;
 import org.mini2Dx.yarn.types.YarnValue;
 import org.mini2Dx.yarn.variable.NumberVariable;
-import org.mini2Dx.yarn.variable.YarnType;
 import org.mini2Dx.yarn.variable.YarnVariable;
 
 /**
- * Base class for Yarn operations
+ * Base class for operations in the Yarn interpreter
  */
 public abstract class YarnOperation {
 	protected final int operationIndex;

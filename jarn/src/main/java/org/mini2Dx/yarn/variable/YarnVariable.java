@@ -23,25 +23,39 @@
  */
 package org.mini2Dx.yarn.variable;
 
+import org.mini2Dx.yarn.types.YarnType;
 import org.mini2Dx.yarn.types.YarnValue;
 
 /**
- *
+ * Base class for Yarn variables
  */
 public abstract class YarnVariable implements YarnValue {
 	private final String name;
 	private final YarnType type;
 	
+	/**
+	 * Constructor
+	 * @param name The variable name
+	 * @param type The variable type
+	 */
 	public YarnVariable(String name, YarnType type) {
 		super();
 		this.name = name;
 		this.type = type;
 	}
 
+	/**
+	 * Returns the variable name
+	 * @return
+	 */
 	public String getName() {
 		return name;
 	}
 
+	/**
+	 * Returns the variable type
+	 * @return
+	 */
 	public YarnType getType() {
 		return type;
 	}

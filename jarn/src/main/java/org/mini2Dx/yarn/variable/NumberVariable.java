@@ -26,10 +26,11 @@ package org.mini2Dx.yarn.variable;
 import org.mini2Dx.yarn.execution.YarnTypeMismatchException;
 import org.mini2Dx.yarn.literal.NumberLiteral;
 import org.mini2Dx.yarn.types.YarnNumber;
+import org.mini2Dx.yarn.types.YarnType;
 import org.mini2Dx.yarn.types.YarnValue;
 
 /**
- *
+ * Represents a Yarn variable of type number
  */
 public class NumberVariable extends YarnVariable implements YarnNumber {
 	private double value;

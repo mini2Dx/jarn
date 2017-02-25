@@ -54,13 +54,19 @@ import org.mini2Dx.yarn.parser.YarnParser.OptionGroupContext;
 import org.mini2Dx.yarn.parser.YarnParser.OptionStatementContext;
 
 /**
- *
+ * A parser for an entire Yarn tree
  */
 public class YarnTreeParser extends YarnBaseListener {
 	private final Stack<YarnIfStatement> ifStack = new Stack<YarnIfStatement>();
 	
 	private YarnNode currentNode;
 
+	/**
+	 * Reads .yarn.txt content, parses and returns the resulting list of {@link YarnNode} instances
+	 * @param reader The {@link Reader} to read the file from
+	 * @return The {@link List} of {@link YarnNode}
+	 * @throws IOException Thrown if an error occurs during parsing
+	 */
 	public List<YarnNode> read(Reader reader) throws IOException {
 		List<YarnNode> result = new ArrayList<YarnNode>();
 

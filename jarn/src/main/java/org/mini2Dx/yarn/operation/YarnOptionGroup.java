@@ -30,7 +30,7 @@ import org.mini2Dx.yarn.YarnExecutionListener;
 import org.mini2Dx.yarn.YarnState;
 
 /**
- *
+ * Represents a group of options to present to the player
  */
 public class YarnOptionGroup extends YarnOperation {
 	private final List<YarnOption> options = new ArrayList<YarnOption>(1);

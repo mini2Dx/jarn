@@ -30,7 +30,7 @@ import org.mini2Dx.yarn.YarnState;
 import org.mini2Dx.yarn.execution.YarnExecutionException;
 
 /**
- *
+ * Acts as a GOTO operation for the end of if blocks
  */
 public class YarnEndIfBlock extends YarnOperation {
 	private final YarnIfStatement ifStatement;

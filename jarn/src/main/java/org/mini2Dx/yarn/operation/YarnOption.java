@@ -24,7 +24,7 @@
 package org.mini2Dx.yarn.operation;
 
 /**
- *
+ * A single option within a {@link YarnOptionGroup}
  */
 public class YarnOption {
 	private final int index;

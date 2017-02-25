@@ -24,7 +24,7 @@
 package org.mini2Dx.yarn.types;
 
 /**
- *
+ * Comparison methods for {@link YarnValue} instances
  */
 public class YarnValueComparator {
 

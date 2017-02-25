@@ -23,12 +23,14 @@
  */
 package org.mini2Dx.yarn.types;
 
-import org.mini2Dx.yarn.variable.YarnType;
-
 /**
- *
+ * Base interface for all Yarn values
  */
 public interface YarnValue extends Comparable<YarnValue> {
 
+	/**
+	 * Returns the value type
+	 * @return The {@link YarnType}
+	 */
 	public YarnType getType();
 }

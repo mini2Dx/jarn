@@ -29,7 +29,7 @@ import org.mini2Dx.yarn.YarnExecutionListener;
 import org.mini2Dx.yarn.YarnState;
 
 /**
- *
+ * Represents a dialogue line in Yarn
  */
 public class YarnLine extends YarnOperation {
 	private final String character;

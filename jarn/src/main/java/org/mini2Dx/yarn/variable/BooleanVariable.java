@@ -26,10 +26,11 @@ package org.mini2Dx.yarn.variable;
 import org.mini2Dx.yarn.execution.YarnTypeMismatchException;
 import org.mini2Dx.yarn.literal.BooleanLiteral;
 import org.mini2Dx.yarn.types.YarnBoolean;
+import org.mini2Dx.yarn.types.YarnType;
 import org.mini2Dx.yarn.types.YarnValue;
 
 /**
- *
+ * Represents a Yarn variable of type boolean
  */
 public class BooleanVariable extends YarnVariable implements YarnBoolean {
 	private boolean value;

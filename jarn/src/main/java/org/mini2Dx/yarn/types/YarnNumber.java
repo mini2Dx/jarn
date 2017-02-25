@@ -24,19 +24,47 @@
 package org.mini2Dx.yarn.types;
 
 /**
- *
+ * Base interface for Yarn numbers
  */
 public interface YarnNumber extends YarnValue {
-	
+	/**
+	 * Returns the underlying double value
+	 * @return
+	 */
 	public double getValue();
 	
+	/**
+	 * Returns the result of addition with another value
+	 * @param value The value to add
+	 * @return A new {@link YarnNumber} containing the result
+	 */
 	public YarnNumber add(double value);
 	
+	/**
+	 * Returns the result of subtraction with another value
+	 * @param value The value to subtract
+	 * @return A new {@link YarnNumber} containing the result
+	 */
 	public YarnNumber subtract(double value);
 	
+	/**
+	 * Returns the result of multiplication with another value
+	 * @param value The value to multiply by
+	 * @return A new {@link YarnNumber} containing the result
+	 */
 	public YarnNumber multiply(double value);
 	
+	/**
+	 * Returns the result of division with another value
+	 * @param value The value to divide by
+	 * @return A new {@link YarnNumber} containing the result
+	 */
 	public YarnNumber divide(double value);
 	
+	/**
+	 * Returns the result of modulus with another value
+	 * @param value The value to modulus by
+	 * @return A new {@link YarnNumber} containing the result
+	 */
 	public YarnNumber modulus(double value);
 }

@@ -29,7 +29,9 @@ import org.mini2Dx.yarn.YarnExecutionListener;
 import org.mini2Dx.yarn.YarnState;
 
 /**
- *
+ * Represents a command operation in Yarn<br>
+ * <br>
+ * Example: &lt;&lt;move bob to bridge&gt;&gt;
  */
 public class YarnCommand extends YarnOperation {
 	private final String command;

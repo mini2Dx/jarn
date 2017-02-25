@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ * Groups several {@link YarnOperation}
  */
 public abstract class YarnOperationGroup extends YarnOperation {
 	protected final List<YarnOperation> operations = new ArrayList<YarnOperation>(2);

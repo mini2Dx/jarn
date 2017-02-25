@@ -24,7 +24,7 @@
 package org.mini2Dx.yarn.execution;
 
 /**
- *
+ * Thrown if an error occurs during execution of a dialogue tree
  */
 public class YarnExecutionException extends Exception {
 	private static final long serialVersionUID = -5102464423888696891L;

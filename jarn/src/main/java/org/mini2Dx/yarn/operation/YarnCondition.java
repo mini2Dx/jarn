@@ -27,14 +27,14 @@ import org.mini2Dx.yarn.YarnState;
 import org.mini2Dx.yarn.execution.YarnExecutionException;
 import org.mini2Dx.yarn.parser.YarnParser.ComparatorExpressionContext;
 import org.mini2Dx.yarn.parser.YarnParser.ConditionExpressionContext;
+import org.mini2Dx.yarn.types.YarnType;
 import org.mini2Dx.yarn.types.YarnValue;
 import org.mini2Dx.yarn.types.YarnValueComparator;
 import org.mini2Dx.yarn.variable.BooleanVariable;
-import org.mini2Dx.yarn.variable.YarnType;
 import org.mini2Dx.yarn.variable.YarnVariable;
 
 /**
- *
+ * Represents a condition expression in Yarn
  */
 public class YarnCondition {
 	private final int lineNumber;

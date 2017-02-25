@@ -23,10 +23,10 @@
  */
 package org.mini2Dx.yarn.execution;
 
-import org.mini2Dx.yarn.variable.YarnType;
+import org.mini2Dx.yarn.types.YarnType;
 
 /**
- *
+ * Thrown if there is a type mismatch when evaluating expressions
  */
 public class YarnTypeMismatchException extends RuntimeException {
 	private static final long serialVersionUID = 2428131372446676806L;

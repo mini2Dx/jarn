@@ -32,7 +32,9 @@ import org.mini2Dx.yarn.parser.YarnParser.ValueExpressionContext;
 import org.mini2Dx.yarn.types.YarnValue;
 
 /**
- *
+ * Represents an assign operation in Yarn<br>
+ * <br>
+ * Example: &lt;&lt;set $variable to 1&gt;&gt;
  */
 public class YarnAssign extends YarnOperation {
 	private final String variableName;

@@ -21,10 +21,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package org.mini2Dx.yarn.variable;
+package org.mini2Dx.yarn.types;
 
 /**
- *
+ * An enum for different Yarn value types
  */
 public enum YarnType {
 	BOOLEAN,
