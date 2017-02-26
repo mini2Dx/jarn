@@ -1,3 +1,15 @@
+buildscript {
+    repositories {
+    	mavenLocal()
+        mavenCentral()
+        jcenter()
+        maven { url 'https://plugins.gradle.org/m2/' }
+    }
+    dependencies {
+		classpath 'io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.5.3'
+    }
+}
+
 allprojects {
     apply plugin: "eclipse"
     apply plugin: "idea"
@@ -16,6 +28,16 @@ allprojects {
         mavenCentral()
         maven { url "https://oss.sonatype.org/content/repositories/releases/" }
     }
+    
+    if(project.hasProperty('ossrhUser') && project.hasProperty("release")) {
+		apply plugin: "io.codearte.nexus-staging"
+		
+		nexusStaging {
+			packageGroup = 'org.mini2Dx'
+			username = ossrhUser
+			password = ossrhPassword
+		}
+	}
 }
 
 project(":jarn-antlr") {
@@ -41,7 +63,7 @@ project(":jarn") {
 	targetCompatibility = 1.7
 	
 	group = 'org.mini2Dx'
-    version = '1.0.0-SNAPSHOT'
+    version = '1.0.0'
     description = 'Java-based interpreter for Yarn'
     
     task copyJarnSourcesToProject(type: Copy, dependsOn: project(":jarn-antlr").compileJava) {
@@ -81,14 +103,6 @@ project(":jarn") {
 	compileJava.dependsOn copyJarnSourcesToProject
 	
 	if(project.hasProperty('ossrhUser') && project.hasProperty("release")) {
-		apply plugin: "io.codearte.nexus-staging"
-
-		nexusStaging {
-			packageGroup = 'org.mini2Dx'
-			username = ossrhUser
-			password = ossrhPassword
-		}
-		
 		signing {
 			sign configurations.archives
 		}
