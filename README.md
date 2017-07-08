@@ -28,3 +28,7 @@ Maven Dependency
 Usage
 --------------------------
 See the [wiki](https://github.com/mini2Dx/jarn/wiki) for documentation.
+
+License
+--------------------------
+The project is licensed under the [MIT License](https://github.com/mini2Dx/jarn/blob/master/LICENSE).
