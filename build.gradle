@@ -84,7 +84,7 @@ project(":jarn") {
 	task docs(type: Javadoc) {
 		source project.sourceSets.main.allJava
 		classpath = files(project.sourceSets.main.compileClasspath)
-		destinationDir = new File(project.parent.projectDir, "docs/javadoc/${projectVersion}")
+		destinationDir = new File(project.parent.projectDir, "docs/javadoc/${version}")
 	}
 	
 	artifacts {
