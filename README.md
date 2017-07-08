@@ -1,10 +1,7 @@
-jarn
+jarn 
 ==========================
 
-Java-based interpreter for Yarn
-
-About
---------------------------
+[![Build Status](https://travis-ci.org/mini2Dx/jarn.svg?branch=master)](https://travis-ci.org/mini2Dx/jarn)
 
 Jarn (or Yarn - [I think it might be a soft j](https://www.youtube.com/watch?v=-OQ4wmqt7po)) is a Java-based interpreter for the [Yarn](https://github.com/infiniteammoinc/Yarn) language.
 
