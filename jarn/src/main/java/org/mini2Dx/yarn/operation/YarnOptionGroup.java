@@ -49,13 +49,13 @@ public class YarnOptionGroup extends YarnOperation {
 
 	@Override
 	public int resume(YarnState yarnState, List<YarnExecutionListener> listeners) {
-		notifyListeners(listeners);
+		notifyListeners(yarnState, listeners);
 		return -1;
 	}
 	
-	private void notifyListeners(List<YarnExecutionListener> listeners) {
+	private void notifyListeners(YarnState yarnState, List<YarnExecutionListener> listeners) {
 		for(int i = listeners.size() - 1; i >= 0; i--) {
-			listeners.get(i).onYarnOptionGroup(this);
+			listeners.get(i).onYarnOptionGroup(yarnState, this);
 		}
 	}
 }

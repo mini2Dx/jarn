@@ -53,7 +53,7 @@ public class YarnCommand extends YarnOperation {
 	
 	private void notifyListeners(YarnState yarnState, List<YarnExecutionListener> listeners) {
 		for(int i = listeners.size() - 1; i >= 0; i--) {
-			listeners.get(i).onYarnCommand(yarnState.applyVariables(command));
+			listeners.get(i).onYarnCommand(yarnState, yarnState.applyVariables(command));
 		}
 	}
 }

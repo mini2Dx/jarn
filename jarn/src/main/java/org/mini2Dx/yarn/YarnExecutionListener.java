@@ -32,29 +32,56 @@ public interface YarnExecutionListener {
 
 	/**
 	 * Called when a command is reached
-	 * @param command The command to run
+	 * 
+	 * @param state
+	 *            The current {@link YarnState}
+	 * @param command
+	 *            The command to run
 	 */
-	public void onYarnCommand(String command);
-	
+	public void onYarnCommand(YarnState state, String command);
+
+	/**
+	 * Called when a variable is assigned a new value
+	 * 
+	 * @param state
+	 *            The current {@link YarnState}
+	 * @param variableName
+	 *            The variable that was assigned
+	 */
+	public void onYarnVariableAssigned(YarnState state, String variableName);
+
 	/**
 	 * Called when a line is reached
-	 * @param character The character name or null if there is no character for this line
-	 * @param text The speech or text for this line
+	 * 
+	 * @param state
+	 *            The current {@link YarnState}
+	 * @param character
+	 *            The character name or null if there is no character for this
+	 *            line
+	 * @param text
+	 *            The speech or text for this line
 	 */
-	public void onYarnLine(String character, String text);
-	
+	public void onYarnLine(YarnState state, String character, String text);
+
 	/**
 	 * Called when the player must select an option<br>
 	 * <br>
 	 * Note: There may be only one option.
 	 * 
-	 * @param optionGroup The {@link YarnOptionGroup} containing the options
+	 * @param state
+	 *            The current {@link YarnState}
+	 * @param optionGroup
+	 *            The {@link YarnOptionGroup} containing the options
 	 */
-	public void onYarnOptionGroup(YarnOptionGroup optionGroup);
-	
+	public void onYarnOptionGroup(YarnState state, YarnOptionGroup optionGroup);
+
 	/**
 	 * Called when execution has reached the end of a tree
-	 * @param yarnNode The {@link YarnNode} that the tree finished on
+	 * 
+	 * @param state
+	 *            The current {@link YarnState}
+	 * @param yarnNode
+	 *            The {@link YarnNode} that the tree finished on
 	 */
-	public void onYarnTreeEnd(YarnNode yarnNode);
+	public void onYarnTreeEnd(YarnState state, YarnNode yarnNode);
 }

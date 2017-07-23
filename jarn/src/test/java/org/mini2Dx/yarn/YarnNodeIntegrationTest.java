@@ -140,12 +140,12 @@ public class YarnNodeIntegrationTest implements YarnExecutionListener {
 	}
 
 	@Override
-	public void onYarnCommand(String command) {
+	public void onYarnCommand(YarnState state,String command) {
 		Assert.assertEquals(expectedCommands.poll(), command);
 	}
 
 	@Override
-	public void onYarnLine(String character, String text) {
+	public void onYarnLine(YarnState state, String character, String text) {
 		if(character != null) {
 			Assert.assertEquals(expectedLines.poll(), character + " " + text);
 		} else {
@@ -154,11 +154,11 @@ public class YarnNodeIntegrationTest implements YarnExecutionListener {
 	}
 
 	@Override
-	public void onYarnOptionGroup(YarnOptionGroup optionGroup) {
+	public void onYarnOptionGroup(YarnState state,YarnOptionGroup optionGroup) {
 	}
 
 	@Override
-	public void onYarnTreeEnd(YarnNode yarnNode) {
+	public void onYarnTreeEnd(YarnState state, YarnNode yarnNode) {
 		Assert.assertEquals(this.yarnNode.getTitle(), yarnNode.getTitle());
 		nodeComplete = true;
 	}
@@ -171,5 +171,9 @@ public class YarnNodeIntegrationTest implements YarnExecutionListener {
 			}
 			yarnState.setCurrentOperation(result);
 		}
+	}
+
+	@Override
+	public void onYarnVariableAssigned(YarnState state, String variableName) {
 	}
 }

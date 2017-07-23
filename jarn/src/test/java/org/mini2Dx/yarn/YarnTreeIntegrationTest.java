@@ -98,12 +98,12 @@ public class YarnTreeIntegrationTest implements YarnExecutionListener {
 	}
 
 	@Override
-	public void onYarnCommand(String command) {
+	public void onYarnCommand(YarnState state, String command) {
 		Assert.assertEquals(expectedCommands.poll(), command);
 	}
 
 	@Override
-	public void onYarnLine(String character, String text) {
+	public void onYarnLine(YarnState state, String character, String text) {
 		if(character != null) {
 			Assert.assertEquals(expectedLines.poll(), character + " " + text);
 		} else {
@@ -112,7 +112,7 @@ public class YarnTreeIntegrationTest implements YarnExecutionListener {
 	}
 
 	@Override
-	public void onYarnOptionGroup(YarnOptionGroup optionGroup) {
+	public void onYarnOptionGroup(YarnState state, YarnOptionGroup optionGroup) {
 		String expectedOption = expectedOptions.poll();
 		
 		StringBuilder returnedOptions = new StringBuilder();
@@ -133,7 +133,7 @@ public class YarnTreeIntegrationTest implements YarnExecutionListener {
 	}
 
 	@Override
-	public void onYarnTreeEnd(YarnNode yarnNode) {
+	public void onYarnTreeEnd(YarnState state, YarnNode yarnNode) {
 		Assert.assertEquals("Node2", yarnNode.getTitle());
 		treeComplete = true;
 	}
@@ -142,5 +142,9 @@ public class YarnTreeIntegrationTest implements YarnExecutionListener {
 		while(!treeComplete) {
 			yarnTree.resume(yarnState);
 		}
+	}
+
+	@Override
+	public void onYarnVariableAssigned(YarnState state, String variableName) {
 	}
 }

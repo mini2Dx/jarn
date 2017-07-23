@@ -52,15 +52,15 @@ public class YarnNode extends YarnOperationGroup {
 			return -1;
 		}
 		if(yarnState.getCurrentOperation() >= operations.size()) {
-			notifyListeners(listeners);
+			notifyListeners(yarnState, listeners);
 			return -1;
 		}
 		return operations.get(yarnState.getCurrentOperation()).resume(yarnState, listeners);
 	}
 	
-	private void notifyListeners(List<YarnExecutionListener> listeners) {
+	private void notifyListeners(YarnState yarnState, List<YarnExecutionListener> listeners) {
 		for(int i = listeners.size() - 1; i >= 0; i--) {
-			listeners.get(i).onYarnTreeEnd(this);
+			listeners.get(i).onYarnTreeEnd(yarnState, this);
 		}
 	}
 

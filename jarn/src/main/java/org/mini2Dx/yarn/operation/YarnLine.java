@@ -61,7 +61,7 @@ public class YarnLine extends YarnOperation {
 	
 	private void notifyListeners(YarnState yarnState, List<YarnExecutionListener> listeners) {
 		for(int i = listeners.size() - 1; i >= 0; i--) {
-			listeners.get(i).onYarnLine(character, yarnState.applyVariables(line));
+			listeners.get(i).onYarnLine(yarnState, character, yarnState.applyVariables(line));
 		}
 	}
 }

@@ -49,6 +49,7 @@ public class YarnAssign extends YarnOperation {
 	@Override
 	public int resume(YarnState yarnState, List<YarnExecutionListener> listeners) throws YarnExecutionException {
 		assignTo(yarnState, variableName);
+		notifyListeners(yarnState, listeners);
 		return operationIndex + 1;
 	}
 
@@ -58,6 +59,12 @@ public class YarnAssign extends YarnOperation {
 			state.putNull(variableName);
 		} else {
 			state.put(variableName, resolvedValue);
+		}
+	}
+	
+	private void notifyListeners(YarnState yarnState, List<YarnExecutionListener> listeners) {
+		for(int i = listeners.size() - 1; i >= 0; i--) {
+			listeners.get(i).onYarnVariableAssigned(yarnState, variableName);
 		}
 	}
 }

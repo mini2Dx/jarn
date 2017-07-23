@@ -1,4 +1,6 @@
-[1.0.1-SNAPSHOT]
+[1.1.0-SNAPSHOT]
+- YarnExecutionListeners now receive YarnState in args
+- YarnExecutionListeners now receive variable assignment events
 
 [1.0.0]
 - Initial release
