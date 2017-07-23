@@ -59,6 +59,15 @@ public class YarnTree {
 			this.nodes.put(node.getTitle(), node);
 		}
 	}
+	
+	/**
+	 * Returns if this tree contains a specific {@link YarnNode}
+	 * @param nodeName The node name to check for
+	 * @return True if the tree contains a {@link YarnNode} with the specified name
+	 */
+	public boolean containsNode(String nodeName) {
+		return nodes.containsKey(nodeName);
+	}
 
 	/**
 	 * Removes all {@link YarnNode} instances from this tree
@@ -81,6 +90,9 @@ public class YarnTree {
 			throw new YarnExecutionException("No current node is set in the YarnState");
 		}
 		YarnNode currentNode = nodes.get(state.getCurrentNode());
+		if(currentNode == null) {
+			throw new YarnExecutionException("No such node '" + state.getCurrentNode() + "'");
+		}
 		int nextOperation = currentNode.resume(state, listeners);
 		if (nextOperation < 0) {
 			return;

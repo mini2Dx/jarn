@@ -1,4 +1,5 @@
 [1.1.0-SNAPSHOT]
+- Added method to check if a YarnTree contains a certain node name
 - YarnExecutionListeners now receive YarnState in args
 - YarnExecutionListeners now receive variable assignment events
 
