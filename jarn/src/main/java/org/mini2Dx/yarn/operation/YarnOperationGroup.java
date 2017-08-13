@@ -37,7 +37,7 @@ public abstract class YarnOperationGroup extends YarnOperation {
 	}
 	
 	@Override
-	public <T extends YarnOperation> void getOperationsOfType(Class<T> clazz, List<T> result) {
+	protected <T extends YarnOperation> void getOperationsOfType(Class<T> clazz, List<T> result) {
 		for(YarnOperation operation : operations) {
 			operation.getOperationsOfType(clazz, result);
 		}
