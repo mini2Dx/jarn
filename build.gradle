@@ -63,7 +63,7 @@ project(":jarn") {
 	targetCompatibility = 1.7
 	
 	group = 'org.mini2Dx'
-    version = '1.1.1'
+    version = '1.1.2-SNAPSHOT'
     description = 'Java-based interpreter for Yarn'
     
     task copyJarnSourcesToProject(type: Copy, dependsOn: project(":jarn-antlr").compileJava) {
