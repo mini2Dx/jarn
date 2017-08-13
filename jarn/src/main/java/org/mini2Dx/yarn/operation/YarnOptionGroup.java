@@ -58,4 +58,11 @@ public class YarnOptionGroup extends YarnOperation {
 			listeners.get(i).onYarnOptionGroup(yarnState, this);
 		}
 	}
+
+	@Override
+	protected <T extends YarnOperation> void getOperationsOfType(Class<T> clazz, List<T> result) {
+		if(clazz.isAssignableFrom(getClass())) {
+			result.add((T) this);
+		}
+	}
 }

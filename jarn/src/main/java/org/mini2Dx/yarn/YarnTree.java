@@ -26,6 +26,7 @@ package org.mini2Dx.yarn;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -58,6 +59,14 @@ public class YarnTree {
 		for (YarnNode node : nodes) {
 			this.nodes.put(node.getTitle(), node);
 		}
+	}
+	
+	/**
+	 * Returns the {@link Collection}  of {@link YarnNode} in this tree
+	 * @return
+	 */
+	public Collection<YarnNode> getNodes() {
+		return nodes.values();
 	}
 	
 	/**

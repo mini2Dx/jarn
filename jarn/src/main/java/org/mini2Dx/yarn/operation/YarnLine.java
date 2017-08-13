@@ -44,6 +44,13 @@ public class YarnLine extends YarnOperation {
 		this.character = character;
 		this.line = line;
 	}
+	
+	@Override
+	protected <T extends YarnOperation> void getOperationsOfType(Class<T> clazz, List<T> result) {
+		if(clazz.isAssignableFrom(getClass())) {
+			result.add((T) this);
+		}
+	}
 
 	public String getCharacter() {
 		return character;

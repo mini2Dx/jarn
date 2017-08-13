@@ -1,3 +1,6 @@
+[1.1.1]
+- Added YarnNode method to get all operations by type
+
 [1.1.0]
 - Added method to check if a YarnTree contains a certain node name
 - YarnExecutionListeners now receive YarnState in args

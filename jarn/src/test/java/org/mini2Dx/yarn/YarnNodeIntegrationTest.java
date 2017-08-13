@@ -33,6 +33,9 @@ import java.util.Queue;
 import org.junit.Before;
 import org.junit.Test;
 import org.mini2Dx.yarn.execution.YarnExecutionException;
+import org.mini2Dx.yarn.operation.YarnCommand;
+import org.mini2Dx.yarn.operation.YarnIfStatement;
+import org.mini2Dx.yarn.operation.YarnLine;
 import org.mini2Dx.yarn.operation.YarnOptionGroup;
 import org.mini2Dx.yarn.parser.YarnParserTest;
 import org.mini2Dx.yarn.parser.YarnTreeParser;
@@ -57,6 +60,13 @@ public class YarnNodeIntegrationTest implements YarnExecutionListener {
 		List<YarnNode> nodes = treeParser.read(new InputStreamReader(YarnParserTest.class.getResourceAsStream("/node-integration-test.txt")));
 		yarnNode = nodes.get(0);
 		listeners.add(this);
+	}
+	
+	@Test
+	public void testGetOperationsOfType() {
+		Assert.assertEquals(1, yarnNode.getOperationsOfType(YarnCommand.class).size());
+		Assert.assertEquals(4, yarnNode.getOperationsOfType(YarnLine.class).size());
+		Assert.assertEquals(3, yarnNode.getOperationsOfType(YarnIfStatement.class).size());
 	}
 
 	@Test

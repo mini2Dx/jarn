@@ -44,6 +44,13 @@ public class YarnCommand extends YarnOperation {
 	public String getCommand() {
 		return command;
 	}
+	
+	@Override
+	protected <T extends YarnOperation> void getOperationsOfType(Class<T> clazz, List<T> result) {
+		if(clazz.isAssignableFrom(getClass())) {
+			result.add((T) this);
+		}
+	}
 
 	@Override
 	public int resume(YarnState yarnState, List<YarnExecutionListener> listeners) {

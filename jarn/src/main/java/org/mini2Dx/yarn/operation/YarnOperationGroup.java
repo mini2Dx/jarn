@@ -35,6 +35,13 @@ public abstract class YarnOperationGroup extends YarnOperation {
 	public YarnOperationGroup(int operationIndex, int lineNumber) {
 		super(operationIndex, lineNumber);
 	}
+	
+	@Override
+	public <T extends YarnOperation> void getOperationsOfType(Class<T> clazz, List<T> result) {
+		for(YarnOperation operation : operations) {
+			operation.getOperationsOfType(clazz, result);
+		}
+	}
 
 	public void appendOperation(YarnOperation operation) {
 		operations.add(operation);

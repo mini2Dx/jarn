@@ -39,6 +39,13 @@ public class YarnEndIfBlock extends YarnOperation {
 		super(operationIndex, -1);
 		this.ifStatement = ifStatement;
 	}
+	
+	@Override
+	protected <T extends YarnOperation> void getOperationsOfType(Class<T> clazz, List<T> result) {
+		if(clazz.isAssignableFrom(getClass())) {
+			result.add((T) this);
+		}
+	}
 
 	@Override
 	public int resume(YarnState yarnState, List<YarnExecutionListener> listeners) throws YarnExecutionException {
