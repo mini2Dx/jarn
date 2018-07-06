@@ -34,6 +34,7 @@ import org.mini2Dx.yarn.operation.YarnOperationGroup;
 public class YarnNode extends YarnOperationGroup {
 	private final String title;
 	private final String [] tags;
+	public final String nodeContent;
 
 	/**
 	 * Constructor
