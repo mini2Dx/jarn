@@ -90,6 +90,7 @@ public class YarnTreeParser extends YarnBaseListener {
 				nodeContent.append(System.lineSeparator());
 			}
 			parseNodeContent(nodeContent.toString());
+			currentNode.nodeContent = nodeContent.toString();
 			result.add(currentNode);
 		}
 		scanner.close();
