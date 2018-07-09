@@ -74,23 +74,7 @@ public class YarnTreeParser extends YarnBaseListener {
 		while (scanner.hasNextLine()) {
 			currentNode = readNodeHeader(scanner);
 
-			StringBuilder nodeContent = new StringBuilder();
-			while (scanner.hasNextLine()) {
-				String nextLine = scanner.nextLine();
-				if (nextLine.startsWith("===")) {
-					break;
-				}
-				if (nextLine.equals("\r\n")) {
-					continue;
-				}
-				if (nextLine.equals("\n")) {
-					continue;
-				}
-				nodeContent.append(nextLine);
-				nodeContent.append(System.lineSeparator());
-			}
-			parseNodeContent(nodeContent.toString());
-			currentNode.nodeContent = nodeContent.toString();
+			parseNodeContent(currentNode.getNodeContent());
 			result.add(currentNode);
 		}
 		scanner.close();
@@ -106,7 +90,24 @@ public class YarnTreeParser extends YarnBaseListener {
 		scanner.nextLine();
 		// Skip header end
 		scanner.nextLine();
-		return new YarnNode(title, tags);
+
+		StringBuilder nodeContent = new StringBuilder();
+		while (scanner.hasNextLine()) {
+			String nextLine = scanner.nextLine();
+			if (nextLine.startsWith("===")) {
+				break;
+			}
+			if (nextLine.equals("\r\n")) {
+				continue;
+			}
+			if (nextLine.equals("\n")) {
+				continue;
+			}
+			nodeContent.append(nextLine);
+			nodeContent.append(System.lineSeparator());
+		}
+
+		return new YarnNode(title, tags, nodeContent.toString());
 	}
 
 	private void parseNodeContent(String nodeContent) throws IOException {

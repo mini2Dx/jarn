@@ -34,17 +34,18 @@ import org.mini2Dx.yarn.operation.YarnOperationGroup;
 public class YarnNode extends YarnOperationGroup {
 	private final String title;
 	private final String [] tags;
-	public String nodeContent = "";
+	private final String nodeContent;
 
 	/**
 	 * Constructor
 	 * @param title The title of the node in Yarn
 	 * @param tags The tags assigned to the node in Yarn
 	 */
-	public YarnNode(String title, String [] tags) {
+	public YarnNode(String title, String [] tags, String nodeContent) {
 		super(0, 0);
 		this.title = title;
 		this.tags = tags;
+		this.nodeContent = nodeContent;
 	}
 
 	@Override
@@ -79,5 +80,9 @@ public class YarnNode extends YarnOperationGroup {
 	 */
 	public String[] getTags() {
 		return tags;
+	}
+
+	public String getNodeContent() {
+		return nodeContent;
 	}
 }
