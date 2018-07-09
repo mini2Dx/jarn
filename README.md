@@ -11,7 +11,7 @@ Gradle Dependency
 --------------------------
 
 ```
-compile "org.mini2Dx:jarn:1.1.1"
+compile "org.mini2Dx:jarn:1.1.2"
 ```
 
 Maven Dependency
@@ -21,7 +21,7 @@ Maven Dependency
 <dependency>
     <groupId>org.mini2Dx</groupId>
     <artifactId>jarn</artifactId>
-    <version>1.1.1</version>
+    <version>1.1.2</version>
 </dependency>
 ```
 
