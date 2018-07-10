@@ -82,32 +82,52 @@ public class YarnTreeParser extends YarnBaseListener {
 	}
 
 	private YarnNode readNodeHeader(Scanner scanner) {
-		String title = scanner.nextLine().replace("title:", "").trim();
-		String[] tags = scanner.nextLine().replace("tags:", "").split(" ");
+		StringBuilder fullNode = new StringBuilder();
+		String unparsedTitle = scanner.nextLine();
+		fullNode.append(unparsedTitle);
+		fullNode.append("\n");
+		String unparsedTags = scanner.nextLine();
+		fullNode.append(unparsedTags);
+		fullNode.append("\n");
+		String title = unparsedTitle.replace("title:", "").trim();
+		String[] tags = unparsedTags.replace("tags:", "").split(" ");
 		// Skip color
-		scanner.nextLine();
+		String color = scanner.nextLine();
+		fullNode.append(color);
+		fullNode.append("\n");
 		// Skip position
-		scanner.nextLine();
+		String pos = scanner.nextLine();
 		// Skip header end
-		scanner.nextLine();
-
+		fullNode.append(pos);
+		fullNode.append("\n");
+		String header = scanner.nextLine();
+		fullNode.append(header);
+		fullNode.append("\n");
 		StringBuilder nodeContent = new StringBuilder();
+
 		while (scanner.hasNextLine()) {
 			String nextLine = scanner.nextLine();
+
 			if (nextLine.startsWith("===")) {
+				fullNode.append(nextLine);
+				fullNode.append("\n");
 				break;
 			}
 			if (nextLine.equals("\r\n")) {
+				fullNode.append(nextLine);
+				fullNode.append("\n");
 				continue;
 			}
 			if (nextLine.equals("\n")) {
+				fullNode.append(nextLine);
+				fullNode.append("\n");
 				continue;
 			}
 			nodeContent.append(nextLine);
 			nodeContent.append(System.lineSeparator());
 		}
 
-		return new YarnNode(title, tags, nodeContent.toString());
+		return new YarnNode(title, tags, nodeContent.toString(), fullNode.toString());
 	}
 
 	private void parseNodeContent(String nodeContent) throws IOException {

@@ -36,16 +36,23 @@ public class YarnNode extends YarnOperationGroup {
 	private final String [] tags;
 	private final String nodeContent;
 
+	public String getFullNode() {
+		return fullNode;
+	}
+
+	private final String fullNode;
+
 	/**
 	 * Constructor
 	 * @param title The title of the node in Yarn
 	 * @param tags The tags assigned to the node in Yarn
 	 */
-	public YarnNode(String title, String [] tags, String nodeContent) {
+	public YarnNode(String title, String [] tags, String nodeContent, String fullNode) {
 		super(0, 0);
 		this.title = title;
 		this.tags = tags;
 		this.nodeContent = nodeContent;
+		this.fullNode = fullNode;
 	}
 
 	@Override
