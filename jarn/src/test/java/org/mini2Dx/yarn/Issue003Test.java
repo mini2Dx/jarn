@@ -36,7 +36,9 @@ import org.mini2Dx.yarn.variable.NumberVariable;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 /**
  * Tests for reproducing issue #3 reported by <a href="https://github.com/tymerica">tymerica</a>
@@ -44,6 +46,9 @@ import java.util.List;
 public class Issue003Test implements YarnExecutionListener {
     private final YarnTreeParser treeParser = new YarnTreeParser();
     private final List<YarnExecutionListener> listeners = new ArrayList<YarnExecutionListener>();
+
+    private final Queue<String> expectedCharacters = new LinkedList<String>();
+    private final Queue<String> expectedLines = new LinkedList<String>();
 
     private YarnNode yarnNode;
     private boolean nodeComplete = false;
@@ -54,19 +59,24 @@ public class Issue003Test implements YarnExecutionListener {
     }
 
     @Test(expected = YarnParserException.class)
-    public void testIssue003Original() throws Exception {
-        treeParser.read(new InputStreamReader(YarnParserTest.class.getResourceAsStream("/issue-003-node-original.txt")));
+    public void testMissingEndIf() throws Exception {
+        treeParser.read(new InputStreamReader(YarnParserTest.class.getResourceAsStream("/exception-node.txt")));
     }
 
     @Test
-    public void testIssue003Modified() throws Exception {
-        List<YarnNode> nodes = treeParser.read(new InputStreamReader(YarnParserTest.class.getResourceAsStream("/issue-003-node-modified.txt")));
+    public void testIssue003() throws Exception {
+        List<YarnNode> nodes = treeParser.read(new InputStreamReader(YarnParserTest.class.getResourceAsStream("/issue-003.txt")));
         yarnNode = nodes.get(0);
+
+        expectedCharacters.offer("A:");
+        expectedLines.offer("Hello player! Do you have enough gold?");
+        expectedCharacters.offer("A:");
+        expectedLines.offer("Good work!");
 
         final YarnState yarnState = new YarnState();
         runTest(yarnState);
 
-        Assert.assertEquals(1, ((NumberVariable) yarnState.get("$gold")).getValue(), 0f);
+        Assert.assertEquals(2.0, ((NumberVariable) yarnState.get("$gold")).getValue(), 0.0);
     }
 
     @Override
@@ -80,7 +90,11 @@ public class Issue003Test implements YarnExecutionListener {
 
     @Override
     public void onYarnLine(YarnState state, String character, String text) {
+        final String expectedCharacter = expectedCharacters.poll();
+        final String expectedLine = expectedLines.poll();
 
+        Assert.assertEquals(expectedCharacter.trim(), character.trim());
+        Assert.assertEquals(expectedLine.trim(), text.trim());
     }
 
     @Override
