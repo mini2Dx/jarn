@@ -39,11 +39,6 @@ import org.mini2Dx.yarn.parser.YarnTreeParser;
  */
 public class YarnTree {
 	private final Map<String, YarnNode> nodes = new HashMap<String, YarnNode>();
-
-	public List<YarnExecutionListener> getListeners() {
-		return listeners;
-	}
-
 	private final List<YarnExecutionListener> listeners = new ArrayList<YarnExecutionListener>(1);
 	private YarnTreeParser treeParser = new YarnTreeParser();
 
@@ -141,4 +136,9 @@ public class YarnTree {
 	public void clearListeners() {
 		listeners.clear();
 	}
+
+	public List<YarnExecutionListener> getListeners() {
+		return listeners;
+	}
+
 }
