@@ -136,4 +136,9 @@ public class YarnTree {
 	public void clearListeners() {
 		listeners.clear();
 	}
+
+	public List<YarnExecutionListener> getListeners() {
+		return listeners;
+	}
+
 }
