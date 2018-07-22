@@ -65,9 +65,22 @@ public class Issue003Test implements YarnExecutionListener {
 
     @Test
     public void testIssue003() throws Exception {
-        List<YarnNode> nodes = treeParser.read(new InputStreamReader(YarnParserTest.class.getResourceAsStream("/issue-003.txt")));
+        List<YarnNode> nodes = treeParser.read(new InputStreamReader(YarnParserTest.class.getResourceAsStream("/issue-003a.txt")));
         yarnNode = nodes.get(0);
 
+        final YarnState yarnState = runTest();
+        Assert.assertEquals(2.0, ((NumberVariable) yarnState.get("$gold")).getValue(), 0.0);
+    }
+
+    @Test
+    public void testIssue003WithRawValues() throws Exception {
+        List<YarnNode> nodes = treeParser.read(new InputStreamReader(YarnParserTest.class.getResourceAsStream("/issue-003b.txt")));
+        yarnNode = nodes.get(0);
+
+        runTest();
+    }
+
+    private YarnState runTest() throws YarnExecutionException {
         expectedCharacters.offer("A:");
         expectedLines.offer("Hello player! Do you have enough gold?");
         expectedCharacters.offer("A:");
@@ -75,8 +88,7 @@ public class Issue003Test implements YarnExecutionListener {
 
         final YarnState yarnState = new YarnState();
         runTest(yarnState);
-
-        Assert.assertEquals(2.0, ((NumberVariable) yarnState.get("$gold")).getValue(), 0.0);
+        return yarnState;
     }
 
     @Override
