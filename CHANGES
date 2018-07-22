@@ -1,3 +1,6 @@
+[1.1.2]
+- (#1) YarnNode content now available via getter (thanks tymerica)
+
 [1.1.1]
 - Added YarnNode method to get all operations by type
 
