@@ -58,7 +58,7 @@ import org.mini2Dx.yarn.parser.YarnParser.OptionStatementContext;
  */
 public class YarnTreeParser extends YarnBaseListener {
 	private final Stack<YarnIfStatement> ifStack = new Stack<YarnIfStatement>();
-	
+
 	private YarnNode currentNode;
 
 	/**
@@ -117,6 +117,10 @@ public class YarnTreeParser extends YarnBaseListener {
 
 		ParseTreeWalker parseTreeWalker = new ParseTreeWalker();
 		parseTreeWalker.walk(this, nodeContext);
+
+		if(!ifStack.isEmpty()) {
+			throw new YarnParserException("<<if>> statement was not closed with an <<endif>> statement");
+		}
 	}
 
 	@Override

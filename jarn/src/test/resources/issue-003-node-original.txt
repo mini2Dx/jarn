@@ -1,0 +1,15 @@
+title: Start
+tags: yellow green
+colorID: 0
+position: 444,216
+---
+<<set $gold to 1>>
+A: Hello player! Do you have enough gold?
+<<if $gold is 1>>
+A: Looks like you need more gold! (This will only appear if $gold is equal to 1.)
+<<elseif $gold > 1>>
+A: Good work! (This will only appear if $gold is greater than 1.)
+<>
+A: Come back when you have some gold! (This will only appear if $gold is less than 1.)
+<>
+===
